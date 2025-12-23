@@ -14,9 +14,9 @@ from typing import Any
 
 
 def load_registry(registry_path: Path = None) -> dict[str, Any]:
-    """Load the registry.json file."""
+    """Load the agents-registry.json file."""
     if registry_path is None:
-        registry_path = Path(".claude/skills/orchestrating-workflows/registry.json")
+        registry_path = Path(".claude/registries/agents-registry.json")
 
     if not registry_path.exists():
         print(f"Error: Registry not found at {registry_path}", file=sys.stderr)
@@ -40,15 +40,6 @@ def get_merged_agents(registry: dict, project: str | None = None) -> dict[str, A
     return agents
 
 
-def get_merged_skills(registry: dict, project: str | None = None) -> dict[str, Any]:
-    """Get merged skill pool (shared + project-specific)."""
-    skills = dict(registry["shared"].get("skills", {}))
-
-    if project and project in registry.get("projects", {}):
-        project_skills = registry["projects"][project].get("skills", {})
-        skills.update(project_skills)
-
-    return skills
 
 
 def tokenize(text: str) -> set[str]:
@@ -116,12 +107,10 @@ def match_requirements(
     """
     registry = load_registry(registry_path)
     agents = get_merged_agents(registry, project)
-    skills = get_merged_skills(registry, project)
 
     requirements_tokens = tokenize(requirements)
 
     matched_agents = {}
-    matched_skills = {}
 
     # Score and filter agents
     for name, agent in agents.items():
@@ -135,21 +124,6 @@ def match_requirements(
         if score >= threshold:
             matched_agents[name] = {
                 **agent,
-                "match_score": score,
-            }
-
-    # Score and filter skills
-    for name, skill in skills.items():
-        score = calculate_match_score(
-            requirements_tokens,
-            skill.get("triggers", []),
-            skill.get("capabilities", []),
-            skill.get("description", ""),
-        )
-
-        if score >= threshold:
-            matched_skills[name] = {
-                **skill,
                 "match_score": score,
             }
 
@@ -174,7 +148,6 @@ def match_requirements(
         "project": project,
         "requirements_summary": requirements[:500],
         "matched_agents": matched_agents,
-        "matched_skills": matched_skills,
         "by_tier": {str(k): v for k, v in sorted(by_tier.items())},
         "total_matched": len(matched_agents),
     }
@@ -251,12 +224,6 @@ def main():
             for agent in agents:
                 parallel = "parallel" if agent.get("parallel", True) else "sequential"
                 print(f"  {agent['name']:30} (score: {agent['match_score']:.1f}, {parallel})")
-
-        if result["matched_skills"]:
-            print(f"\nMatched Skills:")
-            print("-" * 40)
-            for name, skill in result["matched_skills"].items():
-                print(f"  {name:30} (score: {skill['match_score']:.1f})")
 
 
 if __name__ == "__main__":

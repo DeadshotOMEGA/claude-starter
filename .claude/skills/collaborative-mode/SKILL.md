@@ -30,7 +30,7 @@ Guide users through a structured collaboration that:
 
 ## Session State
 
-Maintain state in `.claude/collaborative-state.json` for status line integration:
+Maintain state in `.claude/statusline/state/collab.json` for StatusLine integration:
 
 ```json
 {
@@ -47,6 +47,11 @@ Maintain state in `.claude/collaborative-state.json` for status line integration
 ```
 
 Update state on every phase/category change, agent spawn/return, and risk recalculation.
+
+The StatusLine collab provider renders this as:
+```
+🤝 {project} {phase_icon} {phase}:{category} [{done}/{total}] {risk}
+```
 
 ---
 
@@ -70,13 +75,19 @@ If deferred, infer after Understanding phase and confirm with user.
 
 ### 1.3 Create Plan File
 
+```bash
+python .claude/skills/collaborative-mode/scripts/plan-create.py \
+    docs/plans/{project}-{slug} \
+    --project {project} \
+    --slug {slug} \
+    --goal "{user's initial request}"
 ```
-Task(subagent_type="orchestrate-docs", prompt="Create docs/plans/{project}-{slug}/plan.md using the plan-init template. Initial goal: [user's request]")
-```
+
+This creates `docs/plans/{project}-{slug}/plan.md` from the plan-init template with session metadata.
 
 ### 1.4 Initialize State
 
-Write initial state to `.claude/collaborative-state.json`:
+Write initial state to `.claude/statusline/state/collab.json`:
 - `active: true`
 - `project: {detected}`
 - `phase: "understanding"`
@@ -113,14 +124,19 @@ Load from `config/phases.json`. For each category:
 7. Summarize before moving on: "So to confirm: [summary]. Correct?"
 
 **Categories** (see phases.json for full definitions):
-- Scope & Boundaries
-- Users & Stakeholders
-- Success Criteria
-- Constraints
-- Dependencies
-- Current Workarounds
-- Prior Attempts
-- Urgency & Why Now
+- Scope & Boundaries → update `overview.scope`
+- Users & Stakeholders → update `overview.users`
+- Success Criteria → update `overview.success_criteria`
+- Constraints → update `overview.constraints`
+- Dependencies → update `overview.dependencies`
+- Current Workarounds → update `overview.current_state`
+- Prior Attempts → update `overview.prior_attempts`
+- Urgency & Why Now → update `overview.urgency`
+
+**MANDATORY**: After completing EACH category above, run:
+```bash
+python .claude/skills/collaborative-mode/scripts/plan-update.py {plan_path} {section} "{gathered_info}"
+```
 
 ### After Understanding
 
@@ -160,16 +176,19 @@ On explorer return:
 After exploration results, ask category questions:
 
 **Categories** (see phases.json):
-- Affected Areas (confirm/expand on discoveries)
-- Patterns & Conventions
-- Integration Points
-- Data & State
-- Testing Considerations
-- Risk Areas
-- Undocumented Behavior
-- External Services
+- Affected Areas → update `impact.affected_areas`
+- Patterns & Conventions → update `implementation.patterns`
+- Integration Points → update `impact.integration_points`
+- Data & State → update `implementation.data`
+- Testing Considerations → update `validation.testing`
+- Risk Areas → update `impact.risks`
+- Undocumented Behavior → update `impact.undocumented`
+- External Services → update `impact.external_services`
 
-Some categories have `ask_after: "codebase-explorer"` meaning they depend on exploration results.
+**MANDATORY**: After completing EACH category above, run:
+```bash
+python .claude/skills/collaborative-mode/scripts/plan-update.py {plan_path} {section} "{gathered_info}"
+```
 
 ---
 
@@ -200,15 +219,20 @@ On advisor return:
 ### 4.3 Category Questions
 
 **Categories** (see phases.json):
-- Implementation Approach
-- Performance Requirements
-- Security Requirements
-- Error Handling
-- Rollout Strategy
-- User Experience (if has UI)
-- Maintainability
-- Observability
-- Future Extensibility
+- Implementation Approach → update `implementation.approach`
+- Performance Requirements → update `requirements.performance`
+- Security Requirements → update `requirements.security`
+- Error Handling → update `implementation.error_handling`
+- Rollout Strategy → update `implementation.rollout`
+- User Experience (if has UI) → update `implementation.ux`
+- Maintainability → update `implementation.maintainability`
+- Observability → update `implementation.observability`
+- Future Extensibility → update `implementation.extensibility`
+
+**MANDATORY**: After completing EACH category above, run:
+```bash
+python .claude/skills/collaborative-mode/scripts/plan-update.py {plan_path} {section} "{gathered_info}"
+```
 
 ---
 
@@ -224,13 +248,18 @@ For each review category:
 3. Ask user to confirm or adjust
 
 ### Categories (see phases.json):
-- Scope Reconciliation
-- Success Criteria Validation
-- Constraint Review
-- Dependency Review
-- Risk Assessment
-- Feasibility Check
-- Open Questions
+- Scope Reconciliation → update `review.scope_changes`
+- Success Criteria Validation → update `review.success_validation`
+- Constraint Review → update `review.constraint_changes`
+- Dependency Review → update `review.dependency_changes`
+- Risk Assessment → update `review.risk_summary`
+- Feasibility Check → update `review.feasibility`
+- Open Questions → update `review.open_questions`
+
+**MANDATORY**: After completing EACH category above, run:
+```bash
+python .claude/skills/collaborative-mode/scripts/plan-update.py {plan_path} {section} "{gathered_info}"
+```
 
 ### Major Change Handling
 
@@ -362,27 +391,91 @@ Task(subagent_type="codebase-explorer", prompt="...")
 
 ## Plan Updates
 
-Update the plan file after:
+**CRITICAL**: Update the plan file after:
 - Each category is completed
 - Each agent returns with findings
 - Each key decision is made
 - Risk level changes
 
-Use `orchestrate-docs` for plan updates:
+Use `plan-update.py` directly (no agent spawn overhead):
+
+```bash
+# Update a section with inline content
+python .claude/skills/collaborative-mode/scripts/plan-update.py \
+    {plan_path} \
+    {section} \
+    "{content}"
+
+# Or pipe content from stdin
+echo "{content}" | python .claude/skills/collaborative-mode/scripts/plan-update.py \
+    {plan_path} \
+    {section} \
+    --stdin
 ```
-Task(subagent_type="orchestrate-docs", prompt="Update {plan_path}: add {content} to section {section}")
+
+**Section names** use dot notation matching phases.json:
+- `overview.scope`, `overview.users`, `overview.success_criteria`, `overview.constraints`
+- `overview.dependencies`, `overview.current_state`, `overview.prior_attempts`, `overview.urgency`
+- `impact.affected_areas`, `impact.integration_points`, `impact.risks`
+- `implementation.approach`, `implementation.patterns`, `implementation.data`
+- `requirements.performance`, `requirements.security`
+- `validation.testing`
+- `review.scope_changes`, `review.risk_summary`, `review.open_questions`
+
+**Example** after completing "Scope & Boundaries" category:
+```bash
+python .claude/skills/collaborative-mode/scripts/plan-update.py \
+    docs/plans/myapp-auth/plan.md \
+    overview.scope \
+    "- Add JWT-based authentication to API endpoints
+- Scope includes: login, logout, token refresh
+- Out of scope: OAuth providers, 2FA (future work)
+- Flexibility: Can adjust token expiry based on security review"
 ```
 
 ---
 
 ## Files
 
+**Config**
 - `config/phases.json` — Phase definitions with categories and purposes
 - `config/risk-signals.json` — HIGH/MODERATE risk signal definitions
 - `config/exit-checklist.json` — Mandatory exit steps
+
+**Templates**
 - `templates/plan-init.md` — Initial plan structure
 - `templates/session-header.md` — Session start announcement
 - `templates/handoff-summary.md` — Manual implementation handoff
+
+**Scripts** (use these directly, no agent needed)
+- `scripts/plan-create.py` — Create plan from template with variables
+- `scripts/plan-update.py` — Update specific plan sections by name
 - `scripts/detect-project.py` — .git-based project detection
 - `scripts/calculate-risk.py` — File count to risk level
-- `scripts/collab-statusline.sh` — Status line integration
+
+---
+
+## StatusLine Integration
+
+State is managed via the centralized StatusLine system at `.claude/statusline/`.
+
+### State Location
+
+`.claude/statusline/state/collab.json`
+
+### Phase Icons
+
+| Phase | Icon |
+|-------|------|
+| understanding | 🎯 |
+| exploration | 🔍 |
+| design | ✏️ |
+| review | 🔄 |
+| exit | 🚀 |
+| completed | ✅ |
+
+### Display Format
+
+The collab provider renders: `🤝 {project} {phase_icon} {phase}:{category} [{done}/{total}] {risk}`
+
+Risk levels are color-coded: HIGH (red), MODERATE (yellow), LOW (green).

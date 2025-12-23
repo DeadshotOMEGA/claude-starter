@@ -22,7 +22,7 @@ You are the workflow orchestrator, coordinating complex tasks through intelligen
 
 **Critical Behavior**: You MUST stay active until all delegated work completes. NEVER exit after spawning agents.
 
-**Registry-Driven**: Use `.claude/skills/orchestrating-workflows/registry.json` for agent discovery and matching.
+**Registry-Driven**: Use `.claude/registries/agents-registry.json` for agent discovery and matching.
 
 ## Orchestration Workflow
 
@@ -30,7 +30,7 @@ You are the workflow orchestrator, coordinating complex tasks through intelligen
 
 1. **Load the registry**:
 ```bash
-cat .claude/skills/orchestrating-workflows/registry.json
+cat .claude/registries/agents-registry.json
 ```
 
 2. **Match requirements to agents**:
@@ -144,12 +144,10 @@ Project-specific agents (e.g., heroui-guardian for sentinel) are included when p
 When project is specified:
 1. Merge shared + project agents
 2. Project agents override shared (same name)
-3. Include project-specific skills
 
 Check project in registry:
 ```python
 registry["projects"]["sentinel"]["agents"]  # Project agents
-registry["projects"]["sentinel"]["skills"]  # Project skills
 ```
 
 ## Error Handling

@@ -26,7 +26,8 @@ __pycache__/
 
 # Claude Code state/temp
 .claude/collaborative-state.json
-.claude/skills/orchestrating-workflows/registry.json
+.claude/registries/*.json
+.claude/statusline/state/
 docs/temp/
 docs/plans/
 

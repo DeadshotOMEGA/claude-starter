@@ -21,9 +21,9 @@ If no project specified, attempt auto-detection from requirements.
 
 ### Phase 2: Load Registry
 
-Read the registry:
+Read the agents registry:
 ```bash
-cat .claude/skills/orchestrating-workflows/registry.json
+cat .claude/registries/agents-registry.json
 ```
 
 If registry doesn't exist, inform user to run `/sync-registry` first.

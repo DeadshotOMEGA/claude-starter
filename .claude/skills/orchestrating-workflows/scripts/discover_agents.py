@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Discover and catalog all agents and skills for the workflow orchestrator.
+Discover and catalog all agents for the workflow orchestrator.
 
 Features:
 - Scans shared .claude/ and project-specific [project]/.claude/ directories
 - Uses file modification times for incremental sync
 - Infers tier/capabilities from descriptions when not explicitly provided
-- Outputs unified registry.json
+- Outputs agents-registry.json
 """
 
 import json
@@ -252,54 +252,6 @@ def process_agent_file(file_path: Path, relative_path: str) -> dict[str, Any] | 
     }
 
 
-def process_skill_file(file_path: Path, relative_path: str) -> dict[str, Any] | None:
-    """Process a single skill file and return its metadata."""
-    frontmatter = parse_frontmatter(file_path)
-    if not frontmatter:
-        return None
-
-    name = frontmatter.get("name", file_path.parent.name)
-    description = frontmatter.get("description", "")
-
-    # Skills can have tiers too (supports both 'tier' and 'tiers')
-    tiers = frontmatter.get("tiers")
-    if tiers is not None:
-        if isinstance(tiers, list):
-            tiers = [int(t) for t in tiers]
-        elif isinstance(tiers, str):
-            tiers = [int(t.strip()) for t in tiers.strip("[]").split(",")]
-    else:
-        tier = frontmatter.get("tier")
-        if tier is not None:
-            tiers = [int(tier)]
-        else:
-            tiers = []  # Skills default to no tier (utility)
-
-    category = frontmatter.get("category", "utility")
-
-    capabilities = frontmatter.get("capabilities")
-    if not capabilities:
-        capabilities = infer_capabilities(description)
-    elif isinstance(capabilities, str):
-        capabilities = [c.strip() for c in capabilities.split(",")]
-
-    triggers = frontmatter.get("triggers")
-    if not triggers:
-        triggers = infer_triggers(description, name, capabilities)
-    elif isinstance(triggers, str):
-        triggers = [t.strip() for t in triggers.split(",")]
-
-    return {
-        "tiers": tiers,
-        "category": category,
-        "capabilities": capabilities,
-        "triggers": triggers,
-        "path": relative_path,
-        "mtime": os.path.getmtime(file_path),
-        "description": description[:200] if description else "",
-    }
-
-
 def load_existing_registry(registry_path: Path) -> dict[str, Any]:
     """Load existing registry if it exists."""
     if registry_path.exists():
@@ -311,7 +263,7 @@ def load_existing_registry(registry_path: Path) -> dict[str, Any]:
     return {
         "version": "1.0",
         "last_synced": None,
-        "shared": {"base_path": ".claude", "agents": {}, "skills": {}},
+        "shared": {"base_path": ".claude", "agents": {}},
         "projects": {},
     }
 
@@ -333,7 +285,7 @@ def sync_registry(base_path: Path = Path(".")) -> dict[str, int]:
     """Main sync function. Returns counts of changes."""
     stats = {"unchanged": 0, "added": 0, "modified": 0, "removed": 0}
 
-    registry_path = base_path / ".claude/skills/orchestrating-workflows/registry.json"
+    registry_path = base_path / ".claude/registries/agents-registry.json"
     registry = load_existing_registry(registry_path)
 
     # Helper to check if file needs update
@@ -370,38 +322,7 @@ def sync_registry(base_path: Path = Path(".")) -> dict[str, int]:
 
     registry["shared"]["agents"] = new_shared_agents
 
-    # Process shared skills
-    shared_skills_dir = base_path / ".claude/skills"
-    new_shared_skills = {}
-    existing_shared_skills = registry["shared"].get("skills", {})
-
-    if shared_skills_dir.exists():
-        for skill_file in shared_skills_dir.glob("*/SKILL.md"):
-            # Skip orchestrating-workflows itself
-            if "orchestrating-workflows" in str(skill_file):
-                continue
-
-            name = skill_file.parent.name
-            relative_path = str(skill_file.relative_to(base_path))
-            existing = existing_shared_skills.get(name)
-
-            if needs_update(existing, skill_file):
-                metadata = process_skill_file(skill_file, relative_path)
-                if metadata:
-                    new_shared_skills[name] = metadata
-                    stats["added" if existing is None else "modified"] += 1
-            else:
-                new_shared_skills[name] = existing
-                stats["unchanged"] += 1
-
-    # Count removed shared skills
-    for name in existing_shared_skills:
-        if name not in new_shared_skills:
-            stats["removed"] += 1
-
-    registry["shared"]["skills"] = new_shared_skills
-
-    # Process project-specific agents and skills
+    # Process project-specific agents
     projects = find_projects(base_path)
 
     for project_name, claude_dir in projects:
@@ -410,13 +331,11 @@ def sync_registry(base_path: Path = Path(".")) -> dict[str, int]:
                 "base_path": str(claude_dir.relative_to(base_path)),
                 "keywords": [],
                 "agents": {},
-                "skills": {},
                 "commands": {},
             }
 
         project_data = registry["projects"][project_name]
         existing_project_agents = project_data.get("agents", {})
-        existing_project_skills = project_data.get("skills", {})
 
         # Project agents
         new_project_agents = {}
@@ -441,32 +360,6 @@ def sync_registry(base_path: Path = Path(".")) -> dict[str, int]:
                     stats["unchanged"] += 1
 
         project_data["agents"] = new_project_agents
-
-        # Project skills
-        new_project_skills = {}
-        skills_dir = claude_dir / "skills"
-
-        if skills_dir.exists():
-            # Handle both SKILL.md in subdirs and direct .md files
-            for skill_file in list(skills_dir.glob("*/SKILL.md")) + list(skills_dir.glob("*.md")):
-                if skill_file.name == "SKILL.md":
-                    name = skill_file.parent.name
-                else:
-                    name = skill_file.stem
-
-                relative_path = str(skill_file.relative_to(base_path))
-                existing = existing_project_skills.get(name)
-
-                if needs_update(existing, skill_file):
-                    metadata = process_skill_file(skill_file, relative_path)
-                    if metadata:
-                        new_project_skills[name] = metadata
-                        stats["added" if existing is None else "modified"] += 1
-                else:
-                    new_project_skills[name] = existing
-                    stats["unchanged"] += 1
-
-        project_data["skills"] = new_project_skills
 
         # Project commands (just track paths, no metadata needed)
         commands_dir = claude_dir / "commands"
@@ -504,7 +397,7 @@ def main():
     print(f"  ~ {stats['modified']:3d} modified")
     print(f"  - {stats['removed']:3d} removed")
     print()
-    print("Registry: .claude/skills/orchestrating-workflows/registry.json")
+    print("Registry: .claude/registries/agents-registry.json")
 
 
 if __name__ == "__main__":
