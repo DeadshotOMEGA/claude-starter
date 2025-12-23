@@ -10,8 +10,9 @@ Coordinate complex workflows by dynamically matching requirements to available a
 ## Quick Start
 
 ```bash
-# Sync registry (run when agents/skills change)
+# Sync registries (run when agents/skills change)
 python .claude/skills/orchestrating-workflows/scripts/discover_agents.py
+python .claude/skills/orchestrating-workflows/scripts/discover_skills.py
 
 # Match requirements to agents
 python .claude/skills/orchestrating-workflows/scripts/match_requirements.py "implement user authentication" -p sentinel
@@ -38,25 +39,44 @@ Agents are organized into execution tiers. Each tier completes before the next b
 
 ## Registry Structure
 
-The registry (`registry.json`) contains:
+Two separate registries:
+
+### Agents Registry (`.claude/registries/agents-registry.json`)
 
 ```json
 {
   "shared": {
-    "agents": { ... },
-    "skills": { ... }
+    "agents": { ... }
   },
   "projects": {
     "project-name": {
       "keywords": ["detection", "keywords"],
-      "agents": { ... },
-      "skills": { ... }
+      "agents": { ... }
     }
   }
 }
 ```
 
 Project agents **override** shared agents with the same name.
+
+### Skills Registry (`.claude/registries/skills-registry.json`)
+
+```json
+{
+  "skills": {
+    "skill-name": {
+      "domain": "writing|testing|devops|security|research|orchestration|reference",
+      "what": "Description",
+      "when": "Activation conditions",
+      "why": "Exclusion criteria",
+      "priority": 1,
+      "path": "@.claude/skills/skill-name/SKILL.md"
+    }
+  }
+}
+```
+
+Skills metadata is curated in `.claude/registries/skills-config.json`.
 
 ## Agent Metadata
 
@@ -80,17 +100,30 @@ Each agent in the registry has:
 
 ### discover_agents.py
 
-Scans and catalogs all agents and skills.
+Scans and catalogs all agents.
 
 ```bash
 python scripts/discover_agents.py
 ```
 
 Features:
-- Scans `.claude/` (shared) and `*/claude/` (projects)
+- Scans `.claude/agents/` (shared) and `*/claude/agents/` (projects)
 - Uses file mtime for incremental sync (only re-parses changed files)
 - Infers tier/capabilities from descriptions when not explicit
-- Outputs `registry.json`
+- Outputs `agents-registry.json`
+
+### discover_skills.py
+
+Scans and catalogs all skills.
+
+```bash
+python scripts/discover_skills.py
+```
+
+Features:
+- Scans `.claude/skills/*/SKILL.md`
+- Merges discovered skills with `.claude/registries/skills-config.json`
+- Outputs `skills-registry.json` optimized for hook evaluation
 
 ### match_requirements.py
 
@@ -138,10 +171,11 @@ python scripts/build_sequence.py match.json --prompt -r "original requirements"
          │
          ▼
 ┌─────────────────────────────────┐
-│ 1. Load registry.json           │
+│ 1. Load agents-registry.json    │
 │ 2. Detect/confirm project       │
 │ 3. Match requirements → agents  │
 │ 4. Build execution sequence     │
+│ 5. Clear stale StatusLine state │
 └─────────────────────────────────┘
          │
          ▼
@@ -150,15 +184,17 @@ python scripts/build_sequence.py match.json --prompt -r "original requirements"
 │                                 │
 │ T0: git-flow-manager            │
 │     ↓ wait                      │
-│ T1: explorer, research-* (||)  │
+│ T1: explorer, research-* (||)  │  ← update.py agents add/remove
 │     ↓ wait                      │
-│ T2: database-admin, security-* │
+│ T2: database-admin, security-* │  ← update.py agents add/remove
 │     ↓ wait                      │
-│ T3: implementation-planner      │
+│ T3: implementation-planner      │  ← update.py agents add/remove
 │     ↓ wait                      │
-│ T4: programmer, junior-* (||)  │
+│ T4: programmer, junior-* (||)  │  ← update.py agents add/remove
 │     ↓ wait                      │
-│ T5: test-engineer, reviewer    │
+│ T5: test-engineer, reviewer    │  ← update.py agents add/remove
+│     ↓                           │
+│ Clear all agents                │
 └─────────────────────────────────┘
 ```
 
@@ -216,6 +252,13 @@ Direct invocation:
 2. Run matching and sequencing
 3. Execute immediately
 
+### StatusLine Updates
+
+During execution, the orchestrator updates StatusLine state:
+- Agents tracked in `.claude/statusline/state/agents.json`
+- Use `python .claude/statusline/update.py agents add/remove <name>`
+- Status displays as `🔧 agent1, agent2` in terminal
+
 ## Best Practices
 
 1. **Run /sync-registry** after adding/modifying agents
@@ -224,10 +267,50 @@ Direct invocation:
 4. **Check match scores** - low scores may indicate missing triggers
 5. **Review execution plan** before large orchestrations
 
+## StatusLine Integration
+
+The orchestrator integrates with the StatusLine system for real-time workflow visibility.
+
+### Agent Tracking
+
+Update agents state when spawning/completing agents:
+
+```bash
+# When spawning agent
+python .claude/statusline/update.py agents add "explorer"
+
+# When agent completes
+python .claude/statusline/update.py agents remove "explorer"
+
+# Clear at workflow end
+python .claude/statusline/update.py agents clear
+```
+
+### State File
+
+Running agents tracked in `.claude/statusline/state/agents.json`:
+
+```json
+{
+  "running": ["explorer", "programmer"],
+  "last_updated": "2025-01-15T10:30:00"
+}
+```
+
+### Display Format
+
+The agents provider renders as: `🔧 explorer, programmer`
+
+### Workflow Lifecycle
+
+1. **Start**: Clear any stale agents with `agents clear`
+2. **Per Tier**: Add agents when spawning, remove when complete
+3. **End**: Clear all agents
+
 ## Troubleshooting
 
 **Agent not matching?**
-- Check triggers in registry.json
+- Check triggers in agents-registry.json
 - Add explicit triggers to agent frontmatter
 - Lower threshold: `--threshold 3.0`
 
@@ -236,5 +319,10 @@ Direct invocation:
 - Run /sync-registry to update
 
 **Project not detected?**
-- Add keywords to project in registry
+- Add keywords to project in agents-registry
 - Use explicit `-p project` flag
+
+**Hook not showing skills?**
+- Check that skills-registry.json exists
+- Verify skills-config.json has metadata for all skills
+- Run /sync-registry to regenerate
