@@ -1,0 +1,150 @@
+{
+  "version": "1.0",
+  "patterns": [
+    {
+      "id": "edit_before_read",
+      "type": "tool_misuse",
+      "pattern": "Edit tool requires prior Read|You must use your `Read` tool.*before editing|file_path.*not.*read",
+      "severity": "high",
+      "description": "Attempted to edit a file without reading it first",
+      "suggestion_target": "claudemd",
+      "suggestion_template": "Always read files before editing them using the Read tool"
+    },
+    {
+      "id": "file_not_found",
+      "type": "file_error",
+      "pattern": "No such file or directory|FileNotFoundError|ENOENT|file.*not found|does not exist",
+      "severity": "medium",
+      "description": "Attempted to access a non-existent file",
+      "suggestion_target": "hook",
+      "suggestion_template": "Add PreToolUse hook to validate file existence"
+    },
+    {
+      "id": "permission_denied",
+      "type": "permission_error",
+      "pattern": "Permission denied|Forbidden|Access denied|EACCES|operation not permitted",
+      "severity": "high",
+      "description": "Operation blocked by permissions",
+      "suggestion_target": "hook",
+      "suggestion_template": "Add permission validation hook for sensitive operations"
+    },
+    {
+      "id": "command_not_found",
+      "type": "bash_error",
+      "pattern": "command not found|No such file or directory.*bash|not recognized as.*command",
+      "severity": "medium",
+      "description": "Attempted to run unavailable command",
+      "suggestion_target": "claudemd",
+      "suggestion_template": "Check command availability before use or use alternative"
+    },
+    {
+      "id": "json_parse_error",
+      "type": "parse_error",
+      "pattern": "JSONDecodeError|Invalid JSON|Unexpected token|JSON.*parse.*error",
+      "severity": "medium",
+      "description": "Failed to parse JSON data",
+      "suggestion_target": "rule",
+      "suggestion_template": "Validate JSON structure before parsing"
+    },
+    {
+      "id": "timeout_error",
+      "type": "timeout",
+      "pattern": "Timeout|timed out|ETIMEDOUT|deadline exceeded|took too long",
+      "severity": "high",
+      "description": "Operation exceeded time limit",
+      "suggestion_target": "hook",
+      "suggestion_template": "Increase timeout or optimize long-running operations"
+    },
+    {
+      "id": "import_error",
+      "type": "dependency_error",
+      "pattern": "ImportError|ModuleNotFoundError|Cannot find module|no module named",
+      "severity": "medium",
+      "description": "Missing dependency or module",
+      "suggestion_target": "claudemd",
+      "suggestion_template": "Install required dependencies before use"
+    },
+    {
+      "id": "syntax_error",
+      "type": "code_error",
+      "pattern": "SyntaxError|Unexpected token|Parse error|invalid syntax",
+      "severity": "high",
+      "description": "Code syntax error",
+      "suggestion_target": "rule",
+      "suggestion_template": "Validate code syntax before execution"
+    },
+    {
+      "id": "type_error",
+      "type": "code_error",
+      "pattern": "TypeError|is not a function|undefined is not|cannot read property",
+      "severity": "medium",
+      "description": "Type mismatch error",
+      "suggestion_target": "claudemd",
+      "suggestion_template": "Verify type compatibility before operations"
+    },
+    {
+      "id": "git_error",
+      "type": "vcs_error",
+      "pattern": "fatal:.*git|error:.*git|not a git repository|merge conflict",
+      "severity": "medium",
+      "description": "Git operation failed",
+      "suggestion_target": "rule",
+      "suggestion_template": "Validate git state before operations"
+    },
+    {
+      "id": "network_error",
+      "type": "network",
+      "pattern": "ECONNREFUSED|ENOTFOUND|network.*error|connection refused|fetch failed",
+      "severity": "medium",
+      "description": "Network request failed",
+      "suggestion_target": "claudemd",
+      "suggestion_template": "Handle network errors gracefully with retries"
+    },
+    {
+      "id": "sandbox_blocked",
+      "type": "permission_error",
+      "pattern": "sandbox|blocked by.*policy|not allowed|operation.*denied",
+      "severity": "high",
+      "description": "Operation blocked by sandbox",
+      "suggestion_target": "hook",
+      "suggestion_template": "Use approved alternatives for sandboxed operations"
+    }
+  ],
+  "recovery_signals": {
+    "success_after_failure": {
+      "description": "Same operation type succeeds after failing",
+      "weight": 0.4
+    },
+    "self_correction_language": {
+      "description": "Claude uses recovery language",
+      "patterns": [
+        "let me try",
+        "instead I'll",
+        "let me use",
+        "I'll try a different",
+        "let me read.*first",
+        "I should read",
+        "I need to read"
+      ],
+      "weight": 0.3
+    },
+    "task_completion": {
+      "description": "Task completes successfully despite errors",
+      "weight": 0.3
+    }
+  },
+  "suggestion_targets": {
+    "claudemd": {
+      "description": "Add guidance to CLAUDE.md memory files",
+      "priority": 1
+    },
+    "rule": {
+      "description": "Create .claude/rules/*.md file",
+      "priority": 2
+    },
+    "hook": {
+      "description": "Add hook to settings.json",
+      "priority": 3
+    }
+  }
+}

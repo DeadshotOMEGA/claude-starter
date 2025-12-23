@@ -17,6 +17,17 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+*:Zone.Identifier
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Claude Code state/temp
+.claude/collaborative-state.json
+docs/temp/
+docs/plans/
 
 # Local overrides
 CLAUDE.local.md
