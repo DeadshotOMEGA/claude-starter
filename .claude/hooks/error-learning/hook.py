@@ -172,7 +172,11 @@ def main():
     """Main hook execution."""
     try:
         # Read hook input from stdin
-        input_data = json.load(sys.stdin)
+        stdin_content = sys.stdin.read()
+        if not stdin_content.strip():
+            sys.exit(0)  # No input, exit silently
+
+        input_data = json.loads(stdin_content)
 
         session_id = input_data.get('session_id', 'unknown')
         transcript_path = input_data.get('transcript_path')
