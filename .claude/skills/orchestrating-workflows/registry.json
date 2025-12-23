@@ -1,0 +1,1234 @@
+{
+  "version": "1.0",
+  "last_synced": "2025-12-22T01:39:33.065270",
+  "shared": {
+    "base_path": ".claude",
+    "agents": {
+      "database-advisor": {
+        "tiers": [
+          2
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "monitoring",
+          "database"
+        ],
+        "triggers": [
+          "monitoring",
+          "database",
+          "advisor"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/database-advisor.md",
+        "mtime": 1766387217.585445,
+        "description": "Database administration specialist for operations, backups, replication, and monitoring. Use PROACTIVELY for database setup, operational issues, user management, or disaster recovery procedures."
+      },
+      "test-checker": {
+        "tiers": [
+          2,
+          3,
+          5
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "testing",
+          "analysis"
+        ],
+        "triggers": [
+          "checker",
+          "analysis",
+          "testing",
+          "test"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/test-checker.md",
+        "mtime": 1766388920.5501614,
+        "description": "Test automation and quality assurance specialist. Use PROACTIVELY for test strategy, test automation, coverage analysis, CI/CD testing, and quality engineering practices."
+      },
+      "git-manager": {
+        "tiers": [
+          0,
+          4,
+          5
+        ],
+        "category": "git",
+        "capabilities": [
+          "validation"
+        ],
+        "triggers": [
+          "validation",
+          "manager",
+          "git"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/git-manager.md",
+        "mtime": 1766388938.9718745,
+        "description": "Git Flow workflow manager. Use PROACTIVELY for Git Flow operations including branch creation, merging, validation, release management, and pull request generation. Handles feature, release, and hotfix"
+      },
+      "orchestrate-research": {
+        "tiers": [
+          3
+        ],
+        "category": "explore",
+        "capabilities": [
+          "search"
+        ],
+        "triggers": [
+          "orchestrate",
+          "search",
+          "research"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/orchestrate-research.md",
+        "mtime": 1766388919.3977296,
+        "description": "Coordinate comprehensive research projects with multiple specialized agents. Use PROACTIVELY for complex research requiring multiple phases and specialized researchers."
+      },
+      "frontend-builder": {
+        "tiers": [
+          1,
+          2,
+          4
+        ],
+        "category": "explore",
+        "capabilities": [
+          "optimization",
+          "performance",
+          "frontend"
+        ],
+        "triggers": [
+          "builder",
+          "performance",
+          "frontend",
+          "optimization"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/frontend-builder.md",
+        "mtime": 1766387217.6215954,
+        "description": "Frontend development specialist with framework auto-detection. Discovers React, Vue, or Svelte from codebase and loads appropriate patterns. Use PROACTIVELY for UI components, state management, perfor"
+      },
+      "task-planner": {
+        "tiers": [
+          3
+        ],
+        "category": "expertise",
+        "capabilities": [],
+        "triggers": [
+          "planner",
+          "task"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/task-planner.md",
+        "mtime": 1766388920.2449572,
+        "description": "Complex goal breakdown specialist. Use PROACTIVELY for multi-step projects requiring different capabilities. Masters workflow architecture, agent selection, and task orchestration."
+      },
+      "error-checker": {
+        "tiers": [
+          1,
+          2
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "analysis"
+        ],
+        "triggers": [
+          "analysis",
+          "checker",
+          "error"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/error-checker.md",
+        "mtime": 1766387217.6015117,
+        "description": "Production log analysis and error pattern detection specialist. Use PROACTIVELY for analyzing logs, investigating production errors, identifying system anomalies, and correlating errors across distrib"
+      },
+      "ux-planner": {
+        "tiers": [
+          1,
+          2,
+          3
+        ],
+        "category": "explore",
+        "capabilities": [
+          "search",
+          "design",
+          "optimization"
+        ],
+        "triggers": [
+          "optimization",
+          "search",
+          "planner",
+          "design"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/ux-planner.md",
+        "mtime": 1766387248.6363125,
+        "description": "UI/UX design specialist for user-centered design and interface systems. Use PROACTIVELY for user research, wireframes, design systems, prototyping, accessibility standards, and user experience optimiz"
+      },
+      "implementation-planner": {
+        "tiers": [
+          3,
+          4
+        ],
+        "category": "planning",
+        "capabilities": [
+          "implementation"
+        ],
+        "triggers": [
+          "implementation",
+          "planner"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/implementation-planner.md",
+        "mtime": 1766387217.6376622,
+        "description": "Technical planner for breaking down complex features into implementation tasks. Use PROACTIVELY before implementing complex features to create structured plans with dependencies."
+      },
+      "devops-advisor": {
+        "tiers": [
+          2,
+          4
+        ],
+        "category": "git",
+        "capabilities": [
+          "monitoring",
+          "implementation",
+          "optimization",
+          "security",
+          "deployment"
+        ],
+        "triggers": [
+          "optimization",
+          "monitoring",
+          "advisor",
+          "security",
+          "implementation",
+          "deployment"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/devops-advisor.md",
+        "mtime": 1766388938.293308,
+        "description": "DevOps and infrastructure specialist for CI/CD pipelines, deployment automation, container orchestration, and cloud operations. Use PROACTIVELY for GitHub Actions, Docker, Kubernetes, Terraform, infra"
+      },
+      "cleanup-builder": {
+        "tiers": [],
+        "category": "implementation",
+        "capabilities": [
+          "deployment"
+        ],
+        "triggers": [
+          "builder",
+          "deployment",
+          "cleanup",
+          "refactor"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/cleanup-builder.md",
+        "mtime": 1766387217.5653615,
+        "description": "Detects and removes unused code (imports, functions, classes) across multiple languages. Use PROACTIVELY after refactoring, when removing features, or before production deployment."
+      },
+      "feature-builder": {
+        "tiers": [
+          2,
+          4
+        ],
+        "category": "research",
+        "capabilities": [
+          "implementation"
+        ],
+        "triggers": [
+          "builder",
+          "implementation",
+          "multi-file",
+          "feature"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/feature-builder.md",
+        "mtime": 1766388917.8963556,
+        "description": "Multi-file implementation specialist for complex features spanning 3+ files. Analyzes patterns first, then implements. Use PROACTIVELY for parallel execution of independent coding tasks."
+      },
+      "orchestrate-workflow": {
+        "tiers": [],
+        "category": "general",
+        "capabilities": [],
+        "triggers": [
+          "orchestrate",
+          "workflow"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/orchestrate-workflow.md",
+        "mtime": 1766389076.2626653,
+        "description": "Intelligent workflow coordinator using dynamic agent registry. Matches requirements to agents, sequences execution by tier, handles project-specific agents. Use PROACTIVELY for complex multi-phase tas"
+      },
+      "architecture-advisor": {
+        "tiers": [
+          2,
+          5
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "validation",
+          "review",
+          "analysis",
+          "design"
+        ],
+        "triggers": [
+          "review",
+          "architecture",
+          "advisor",
+          "validation",
+          "analysis"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/architecture-advisor.md",
+        "mtime": 1766387217.5533113,
+        "description": "Technical advisor for architectural analysis, code review, SOLID compliance, and design decisions. Specializes in pattern adherence, PR reviews, proper layering, and maintainability. Use PROACTIVELY f"
+      },
+      "web-researcher": {
+        "tiers": [
+          1
+        ],
+        "category": "explore",
+        "capabilities": [
+          "search",
+          "analysis"
+        ],
+        "triggers": [
+          "analysis",
+          "web",
+          "search",
+          "researcher"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/web-researcher.md",
+        "mtime": 1766385885.8664198,
+        "description": "Expert web researcher for information gathering, fact-checking, and multi-source synthesis. Use PROACTIVELY for research tasks, competitive analysis, and trend analysis."
+      },
+      "orchestrate-project": {
+        "tiers": [
+          3
+        ],
+        "category": "planning",
+        "capabilities": [
+          "validation"
+        ],
+        "triggers": [
+          "validation",
+          "project",
+          "orchestrate"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/orchestrate-project.md",
+        "mtime": 1766387217.6617625,
+        "description": "Project workflow orchestrator. Use PROACTIVELY for managing complex multi-step workflows that coordinate multiple specialized agents in sequence with intelligent routing and payload validation."
+      },
+      "debug-checker": {
+        "tiers": [
+          2,
+          5
+        ],
+        "category": "explore",
+        "capabilities": [
+          "debugging"
+        ],
+        "triggers": [
+          "test",
+          "debug",
+          "checker",
+          "debugging"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/debug-checker.md",
+        "mtime": 1766387217.5894618,
+        "description": "Code-level debugging specialist for errors, test failures, and stack traces. Use PROACTIVELY when encountering code issues, analyzing stack traces, or fixing broken tests. Focuses on hypothesis-driven"
+      },
+      "mcp-advisor": {
+        "tiers": [
+          2
+        ],
+        "category": "expertise",
+        "capabilities": [],
+        "triggers": [
+          "mcp",
+          "advisor"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/mcp-advisor.md",
+        "mtime": 1766388938.0817544,
+        "description": "Model Context Protocol (MCP) integration specialist for the cli-tool components system. Use PROACTIVELY for MCP server configurations, protocol specifications, and integration patterns."
+      },
+      "schema-builder": {
+        "tiers": [
+          2,
+          4
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "database",
+          "migration"
+        ],
+        "triggers": [
+          "builder",
+          "schema",
+          "migration",
+          "database"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/schema-builder.md",
+        "mtime": 1766388921.1445293,
+        "description": "Production database specialist for schema changes, migrations, RLS policies, and RPC functions. Use PROACTIVELY for any database modifications on production."
+      },
+      "code-reviewer": {
+        "tiers": [
+          2,
+          4,
+          5
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "review",
+          "security"
+        ],
+        "triggers": [
+          "review",
+          "security",
+          "code",
+          "reviewer"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/code-reviewer.md",
+        "mtime": 1766388917.6435232,
+        "description": "Expert code review specialist for quality, security, and maintainability. Use PROACTIVELY after writing or modifying code to ensure high development standards."
+      },
+      "security-advisor": {
+        "tiers": [
+          2,
+          4,
+          5
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "review",
+          "security"
+        ],
+        "triggers": [
+          "review",
+          "security",
+          "advisor"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/security-advisor.md",
+        "mtime": 1766388919.9839313,
+        "description": "Review code for vulnerabilities, implement secure authentication, and ensure OWASP compliance. Handles JWT, OAuth2, CORS, CSP, and encryption. Use PROACTIVELY for security reviews, auth flows, or vuln"
+      },
+      "codebase-explorer": {
+        "tiers": [
+          1
+        ],
+        "category": "explore",
+        "capabilities": [
+          "discovery"
+        ],
+        "triggers": [
+          "codebase",
+          "explorer",
+          "discovery"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/codebase-explorer.md",
+        "mtime": 1766387217.5774117,
+        "description": "Codebase discovery specialist for finding files, tracing data flows, and understanding patterns. Use PROACTIVELY for context gathering and code investigation."
+      },
+      "product-planner": {
+        "tiers": [
+          2,
+          3
+        ],
+        "category": "expertise",
+        "capabilities": [],
+        "triggers": [
+          "product",
+          "planner"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/product-planner.md",
+        "mtime": 1766387272.1257572,
+        "description": "Interactive requirements gathering specialist. Use PROACTIVELY when starting new features or products to define comprehensive requirements through structured sessions."
+      },
+      "react-optimizer": {
+        "tiers": [
+          2
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "optimization",
+          "performance"
+        ],
+        "triggers": [
+          "optimizer",
+          "performance",
+          "react",
+          "optimization"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/react-optimizer.md",
+        "mtime": 1766387272.1378002,
+        "description": "React performance optimization specialist. Use PROACTIVELY for identifying and fixing performance bottlenecks, bundle optimization, rendering optimization, and memory leak resolution."
+      },
+      "repo-researcher": {
+        "tiers": [
+          1
+        ],
+        "category": "git",
+        "capabilities": [
+          "implementation",
+          "documentation"
+        ],
+        "triggers": [
+          "implementation",
+          "documentation",
+          "repo",
+          "researcher"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/repo-researcher.md",
+        "mtime": 1766387217.693896,
+        "description": "Analyze code repositories, GitHub projects, and technical documentation. Use PROACTIVELY for evaluating libraries, finding implementation patterns, and comparing technical solutions."
+      },
+      "focused-builder": {
+        "tiers": [
+          4
+        ],
+        "category": "implementation",
+        "capabilities": [
+          "implementation"
+        ],
+        "triggers": [
+          "builder",
+          "implementation",
+          "focused"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/focused-builder.md",
+        "mtime": 1766388918.177324,
+        "description": "Focused implementation agent for well-specified tasks with clear patterns. Use PROACTIVELY for straightforward coding when requirements and approach are already defined."
+      },
+      "orchestrate-docs": {
+        "tiers": [],
+        "category": "documentation",
+        "capabilities": [
+          "documentation"
+        ],
+        "triggers": [
+          "orchestrate",
+          "documentation",
+          "docs"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/orchestrate-docs.md",
+        "mtime": 1766388917.4067438,
+        "description": "Documentation workflow orchestrator. Use PROACTIVELY for any documentation task - automatically detects document type and loads appropriate Skill."
+      },
+      "sql-advisor": {
+        "tiers": [
+          2,
+          3
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "design",
+          "optimization",
+          "database"
+        ],
+        "triggers": [
+          "optimization",
+          "advisor",
+          "sql",
+          "database",
+          "design"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/sql-advisor.md",
+        "mtime": 1766387217.722013,
+        "description": "Write complex SQL queries, optimize execution plans, and design normalized schemas. Masters CTEs, window functions, and stored procedures. Use PROACTIVELY for query optimization, complex joins, or dat"
+      },
+      "schema-architect": {
+        "tiers": [
+          2,
+          3
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "design",
+          "database"
+        ],
+        "triggers": [
+          "design",
+          "schema",
+          "database",
+          "architect"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/schema-architect.md",
+        "mtime": 1766388920.8232386,
+        "description": "Database architecture and design specialist. Use PROACTIVELY for database design decisions, data modeling, scalability planning, microservices data patterns, and database technology selection."
+      },
+      "nextjs-architect": {
+        "tiers": [
+          2,
+          3
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "optimization",
+          "performance",
+          "migration"
+        ],
+        "triggers": [
+          "performance",
+          "optimization",
+          "nextjs",
+          "architect",
+          "migration"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/nextjs-architect.md",
+        "mtime": 1766387248.6483643,
+        "description": "Master of Next.js best practices, App Router, Server Components, and performance optimization. Use PROACTIVELY for Next.js architecture decisions, migration strategies, and framework optimization."
+      },
+      "backend-advisor": {
+        "tiers": [
+          2,
+          3
+        ],
+        "category": "expertise",
+        "capabilities": [
+          "design",
+          "optimization",
+          "performance",
+          "database",
+          "api"
+        ],
+        "triggers": [
+          "api",
+          "performance",
+          "optimization",
+          "backend",
+          "advisor",
+          "database"
+        ],
+        "parallel": true,
+        "path": ".claude/agents/backend-advisor.md",
+        "mtime": 1766387217.557328,
+        "description": "Backend system architecture and API design specialist. Use PROACTIVELY for RESTful APIs, microservice boundaries, database schemas, scalability planning, and performance optimization."
+      }
+    },
+    "skills": {
+      "writing-react": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "performance"
+        ],
+        "triggers": [
+          "performance",
+          "react",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-react/SKILL.md",
+        "mtime": 1766370082.9837682,
+        "description": "Modern React patterns with hooks, context, and component architecture. Use when building React components, managing state, or optimizing React performance."
+      },
+      "writing-commands": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "commands",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-commands/SKILL.md",
+        "mtime": 1766367269.8169954,
+        "description": "Write slash command definitions for .claude/commands/. Use when creating or updating custom slash commands."
+      },
+      "applying-testing-patterns": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "testing"
+        ],
+        "triggers": [
+          "testing",
+          "applying",
+          "test",
+          "patterns"
+        ],
+        "path": ".claude/skills/applying-testing-patterns/SKILL.md",
+        "mtime": 1766388590.8775537,
+        "description": "Comprehensive testing patterns, frameworks, and CI/CD templates. Use when implementing test suites, configuring test runners, or setting up testing infrastructure."
+      },
+      "applying-devops-patterns": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "monitoring",
+          "security",
+          "deployment"
+        ],
+        "triggers": [
+          "devops",
+          "security",
+          "patterns",
+          "deployment",
+          "monitoring",
+          "applying"
+        ],
+        "path": ".claude/skills/applying-devops-patterns/SKILL.md",
+        "mtime": 1766388571.9096386,
+        "description": "DevOps patterns, templates, and infrastructure code examples for CI/CD pipelines, Infrastructure as Code, Kubernetes deployments, monitoring stacks, security scanning, and deployment strategies. Use w"
+      },
+      "writing-api-specs": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation",
+          "api"
+        ],
+        "triggers": [
+          "api",
+          "documentation",
+          "specs",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-api-specs/SKILL.md",
+        "mtime": 1766388685.5581288,
+        "description": "Write OpenAPI/Swagger specifications and API documentation. Use when creating API specs, SDK docs, or interactive API documentation."
+      },
+      "writing-changelogs": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation"
+        ],
+        "triggers": [
+          "documentation",
+          "changelogs",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-changelogs/SKILL.md",
+        "mtime": 1766388532.4660027,
+        "description": "Write changelogs and release notes following Keep a Changelog format. Use when creating CHANGELOG.md, release notes, or version documentation."
+      },
+      "configuring-mcp-servers": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "mcp",
+          "configuring",
+          "servers"
+        ],
+        "path": ".claude/skills/configuring-mcp-servers/SKILL.md",
+        "mtime": 1766388573.422626,
+        "description": "MCP server configuration templates, patterns, and integration examples for Claude Code. Use when creating MCP configurations, setting up MCP servers, or integrating external services via Model Context"
+      },
+      "writing-cli-commands": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "design"
+        ],
+        "triggers": [
+          "cli",
+          "design",
+          "commands",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-cli-commands/SKILL.md",
+        "mtime": 1766388532.8597324,
+        "description": "CLI command development patterns for argument parsing, task automation, and command-line interface best practices. Use when designing CLI tools or writing slash commands."
+      },
+      "managing-context": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "managing",
+          "context"
+        ],
+        "path": ".claude/skills/managing-context/SKILL.md",
+        "mtime": 1766388533.233409,
+        "description": "Context preservation patterns for multi-agent workflows and long-running tasks. Use when coordinating complex projects or preserving context across agent invocations."
+      },
+      "writing-investigations": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "implementation"
+        ],
+        "triggers": [
+          "implementation",
+          "investigations",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-investigations/SKILL.md",
+        "mtime": 1766367270.7451699,
+        "description": "Write investigation documents that bundle all context needed for implementation. Use when creating investigation.md files or context bundles for features/fixes."
+      },
+      "writing-library-references": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "library",
+          "references",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-library-references/SKILL.md",
+        "mtime": 1766388573.0527294,
+        "description": "Create compressed LLM-optimized reference docs for external libraries. Use when documenting third-party libraries or creating quick reference guides."
+      },
+      "writing-rules": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "rules",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-rules/SKILL.md",
+        "mtime": 1766367269.4009306,
+        "description": "Write modular rule files for .claude/rules/ that provide contextual guidance. Use when creating or updating context rules."
+      },
+      "writing-tailwind": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "design"
+        ],
+        "triggers": [
+          "design",
+          "tailwind",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-tailwind/SKILL.md",
+        "mtime": 1766370086.7222967,
+        "description": "Utility-first CSS with Tailwind patterns, responsive design, and theming. Use when styling components with Tailwind CSS or implementing responsive layouts."
+      },
+      "writing-reports": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "search",
+          "analysis"
+        ],
+        "triggers": [
+          "reports",
+          "analysis",
+          "search",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-reports/SKILL.md",
+        "mtime": 1766367275.6625905,
+        "description": "Write research reports with findings, analysis, and citations. Use when creating reports from research findings or synthesizing information."
+      },
+      "writing-commit-messages": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "review"
+        ],
+        "triggers": [
+          "messages",
+          "commit",
+          "review",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-commit-messages/SKILL.md",
+        "mtime": 1766388498.4457488,
+        "description": "Generate descriptive commit messages by analyzing git diffs. Use when the user asks for help writing commit messages or reviewing staged changes."
+      },
+      "writing-feature-docs": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation"
+        ],
+        "triggers": [
+          "feature",
+          "docs",
+          "documentation",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-feature-docs/SKILL.md",
+        "mtime": 1766367272.657624,
+        "description": "Write feature documentation explaining how features work. Use when creating feature docs or explaining existing functionality."
+      },
+      "referencing-typescript-sdk": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "sdk",
+          "typescript",
+          "referencing"
+        ],
+        "path": ".claude/skills/referencing-typescript-sdk/SKILL.md",
+        "mtime": 1766388531.8593636,
+        "description": "Comprehensive reference for the TypeScript Agent SDK with functions, types, and interfaces for programmatic Claude Code interactions. Use when building applications with the Anthropic Agent SDK or int"
+      },
+      "writing-architecture": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation",
+          "design"
+        ],
+        "triggers": [
+          "documentation",
+          "design",
+          "architecture",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-architecture/SKILL.md",
+        "mtime": 1766367274.4501448,
+        "description": "Write architecture documentation explaining system design. Use when creating architecture.md or system design documents."
+      },
+      "writing-technical-docs": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation"
+        ],
+        "triggers": [
+          "technical",
+          "docs",
+          "documentation",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-technical-docs/SKILL.md",
+        "mtime": 1766388573.8287082,
+        "description": "Write technical documentation including user guides, tutorials, and how-to guides. Use when creating documentation for end users or developers."
+      },
+      "executing-parallel-work": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "delegation",
+          "implementation",
+          "search"
+        ],
+        "triggers": [
+          "delegation",
+          "implementation",
+          "executing",
+          "parallel",
+          "work",
+          "search"
+        ],
+        "path": ".claude/skills/executing-parallel-work/SKILL.md",
+        "mtime": 1766388499.0316458,
+        "description": "Coordinate concurrent task execution through agent delegation. Plan independent work, manage dependencies, and execute multiple agents simultaneously. Use when handling multiple unrelated tasks, resea"
+      },
+      "writing-shell-scripts": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "deployment"
+        ],
+        "triggers": [
+          "deployment",
+          "shell",
+          "scripts",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-shell-scripts/SKILL.md",
+        "mtime": 1766370085.0106533,
+        "description": "Robust shell scripts with POSIX compliance, error handling, and automation patterns. Use when writing bash/zsh scripts, deployment automation, or system administration tasks."
+      },
+      "crafting-prompts": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "optimization",
+          "performance"
+        ],
+        "triggers": [
+          "performance",
+          "optimization",
+          "crafting",
+          "prompts"
+        ],
+        "path": ".claude/skills/crafting-prompts/SKILL.md",
+        "mtime": 1766388645.2354898,
+        "description": "Expert prompt optimization for LLMs and AI systems. Use when crafting system prompts, improving agent performance, or building AI features. Masters prompt patterns and techniques."
+      },
+      "writing-claudemd": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "claudemd",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-claudemd/SKILL.md",
+        "mtime": 1766367269.0208716,
+        "description": "Write and maintain CLAUDE.md memory files for directories, modules, and projects. Use when creating or updating any CLAUDE.md file."
+      },
+      "applying-git-flow": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "validation"
+        ],
+        "triggers": [
+          "validation",
+          "applying",
+          "flow",
+          "git"
+        ],
+        "path": ".claude/skills/applying-git-flow/SKILL.md",
+        "mtime": 1766388572.2432377,
+        "description": "Git Flow workflow patterns, validation rules, and automation scripts for branch management. Use when executing Git Flow operations like feature, release, or hotfix workflows."
+      },
+      "writing-typescript": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "design",
+          "api"
+        ],
+        "triggers": [
+          "api",
+          "typescript",
+          "design",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-typescript/SKILL.md",
+        "mtime": 1766370087.1422653,
+        "description": "Advanced TypeScript patterns with strict typing, generics, conditional types, and type inference. Use when writing TypeScript code, creating complex types, designing type-safe APIs, or migrating from "
+      },
+      "writing-accessibility": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "accessibility",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-accessibility/SKILL.md",
+        "mtime": 1766370087.186266,
+        "description": "WCAG-compliant accessibility patterns with ARIA, keyboard navigation, and screen reader support. Use when implementing accessible UI components or auditing accessibility."
+      },
+      "writing-legal-docs": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation"
+        ],
+        "triggers": [
+          "legal",
+          "documentation",
+          "docs",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-legal-docs/SKILL.md",
+        "mtime": 1766388572.7335951,
+        "description": "Legal documentation and compliance guidance for privacy policies, terms of service, GDPR compliance, and regulatory documentation. Use when creating legal notices or ensuring data protection complianc"
+      },
+      "writing-skills": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "skills",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-skills/SKILL.md",
+        "mtime": 1766369127.8386586,
+        "description": "Write and manage Claude Code Skill definitions. Use when creating, editing, or understanding .claude/skills/*/SKILL.md files."
+      },
+      "writing-readmes": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation"
+        ],
+        "triggers": [
+          "readmes",
+          "documentation",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-readmes/SKILL.md",
+        "mtime": 1766367273.245785,
+        "description": "Write README.md files for projects and packages. Use when creating or improving README documentation."
+      },
+      "designing-databases": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "design",
+          "database"
+        ],
+        "triggers": [
+          "designing",
+          "database",
+          "design",
+          "databases"
+        ],
+        "path": ".claude/skills/designing-databases/SKILL.md",
+        "mtime": 1766388533.6352355,
+        "description": "Database architecture patterns including data modeling, microservices data boundaries, polyglot persistence, and scalability strategies. Use when designing database schemas, choosing database technolo"
+      },
+      "managing-memory": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "managing",
+          "memory"
+        ],
+        "path": ".claude/skills/managing-memory/SKILL.md",
+        "mtime": 1766388498.6945512,
+        "description": "Manage Claude Code memory files (CLAUDE.md) and rules (.claude/rules/). Audit existing memory for conflicts and gaps, migrate monolithic files to modular rules, guide users through creating new rules "
+      },
+      "writing-hooks": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "hooks",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-hooks/SKILL.md",
+        "mtime": 1766367270.2370703,
+        "description": "Configure Claude Code hooks in settings.json for event-driven automation. Use when setting up or modifying lifecycle hooks."
+      },
+      "writing-plans": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "implementation"
+        ],
+        "triggers": [
+          "implementation",
+          "plans",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-plans/SKILL.md",
+        "mtime": 1766367271.5613499,
+        "description": "Write implementation plans with task breakdowns and dependencies. Use when creating plan.md files or implementation strategies."
+      },
+      "processing-spreadsheets": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "analysis"
+        ],
+        "triggers": [
+          "spreadsheets",
+          "analysis",
+          "processing"
+        ],
+        "path": ".claude/skills/processing-spreadsheets/SKILL.md",
+        "mtime": 1766388591.110398,
+        "description": "Comprehensive spreadsheet creation, editing, and analysis with support for formulas, formatting, data analysis, and visualization. Use when working with spreadsheets (.xlsx, .xlsm, .csv, .tsv) for cre"
+      },
+      "writing-subagents": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "review"
+        ],
+        "triggers": [
+          "subagents",
+          "review",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-subagents/SKILL.md",
+        "mtime": 1766387075.2932758,
+        "description": "Write and review Claude Code subagent definitions following official best practices. Use when creating, editing, or auditing .claude/agents/*.md files."
+      },
+      "auditing-security": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "validation",
+          "review",
+          "analysis",
+          "security",
+          "deployment"
+        ],
+        "triggers": [
+          "review",
+          "security",
+          "deployment",
+          "auditing",
+          "validation",
+          "analysis"
+        ],
+        "path": ".claude/skills/auditing-security/SKILL.md",
+        "mtime": 1766388499.8986673,
+        "description": "Identify and remediate vulnerabilities through systematic code analysis. Use when performing security assessments, pre-deployment reviews, compliance validation (OWASP, PCI-DSS, GDPR), investigating k"
+      },
+      "writing-api-endpoints": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation",
+          "api"
+        ],
+        "triggers": [
+          "api",
+          "endpoints",
+          "documentation",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-api-endpoints/SKILL.md",
+        "mtime": 1766367275.0703516,
+        "description": "Write documentation for individual API endpoints. Use when documenting REST API endpoints or server actions."
+      },
+      "writing-setup-guides": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "documentation"
+        ],
+        "triggers": [
+          "setup",
+          "documentation",
+          "guides",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-setup-guides/SKILL.md",
+        "mtime": 1766367273.9339845,
+        "description": "Write development setup guides for projects. Use when creating setup.md or getting-started documentation."
+      },
+      "testing-playwright": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [
+          "testing"
+        ],
+        "triggers": [
+          "testing",
+          "test",
+          "playwright"
+        ],
+        "path": ".claude/skills/testing-playwright/SKILL.md",
+        "mtime": 1766388499.4410727,
+        "description": "Run and write end-to-end browser tests with Playwright. Use when testing web applications, verifying UI functionality, checking user flows, or when proactive testing is beneficial after code changes. "
+      },
+      "writing-requirements": {
+        "tiers": [],
+        "category": "utility",
+        "capabilities": [],
+        "triggers": [
+          "requirements",
+          "writing"
+        ],
+        "path": ".claude/skills/writing-requirements/SKILL.md",
+        "mtime": 1766367272.0734706,
+        "description": "Write requirements documents with functional and technical specs. Use when creating requirements.md files or gathering feature specifications."
+      }
+    }
+  },
+  "projects": {}
+}

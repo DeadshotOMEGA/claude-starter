@@ -1,0 +1,55 @@
+name: writing-subagents
+version: "1.0"
+doc_type: agent
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Agents use filename as identifier, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Frontmatter
+      contains: [name, description]
+    - name: Role Statement
+    - name: When Invoked
+    - name: Focus Areas
+    - name: Approach
+    - name: Output
+    - name: Quality Checklist
+  optional_sections:
+    - name: Registry Metadata
+    - name: Tools Selection
+    - name: Model Selection
+    - name: Advanced Usage
+
+validation:
+  rules:
+    - id: has_frontmatter_name
+      pattern: "^---\\n[\\s\\S]*?name:\\s*[\\w-]+"
+      message: "Agent must have a name field in frontmatter"
+      suggestion: "Add 'name: agent-name' in YAML frontmatter"
+      docs: ".claude/skills/writing-subagents/SKILL.md#frontmatter-specification"
+    - id: has_frontmatter_description
+      pattern: "^---\\n[\\s\\S]*?description:\\s*.+"
+      message: "Agent must have a description field in frontmatter"
+      suggestion: "Add 'description: What this agent does' in frontmatter"
+      docs: ".claude/skills/writing-subagents/SKILL.md#frontmatter-specification"
+    - id: has_proactive_trigger
+      pattern: "(PROACTIVELY|proactively|Use when)"
+      message: "Description should include trigger phrase for auto-delegation"
+      suggestion: "Include 'Use PROACTIVELY' or 'Use when' in description"
+      docs: ".claude/skills/writing-subagents/SKILL.md#description-best-practices"
+    - id: name_matches_filename
+      pattern: null
+      message: "Agent name field must match filename (without .md)"
+      suggestion: "Ensure name field matches the filename"
+      docs: ".claude/skills/writing-subagents/SKILL.md#frontmatter-specification"
+
+output:
+  default_path: ".claude/agents/{name}.md"
+  naming: kebab-case

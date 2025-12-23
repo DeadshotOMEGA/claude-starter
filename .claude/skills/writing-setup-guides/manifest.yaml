@@ -1,0 +1,52 @@
+name: writing-setup-guides
+version: "1.0"
+doc_type: readme
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Setup guides typically named setup.md or SETUP.md, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Prerequisites
+    - name: Quick Start
+    - name: Environment Configuration
+      contains: [required variables, optional variables]
+    - name: Database Setup
+      contains: [local options, cloud options]
+    - name: Running the Application
+      contains: [dev, build, test]
+    - name: Common Commands
+    - name: Project Structure
+    - name: Troubleshooting
+  optional_sections:
+    - name: IDE Setup
+    - name: Docker Setup
+    - name: CI/CD Setup
+
+validation:
+  rules:
+    - id: has_prerequisites
+      pattern: "^##?\\s*Prerequisites"
+      message: "Setup guide must list prerequisites"
+      suggestion: "Add Prerequisites section with required tools and versions"
+      docs: ".claude/skills/writing-setup-guides/SKILL.md#required-sections"
+    - id: has_env_vars
+      pattern: "(DATABASE_URL|API_KEY|SECRET|TOKEN)="
+      message: "Setup guide should document environment variables"
+      suggestion: "List all required and optional environment variables"
+      docs: ".claude/skills/writing-setup-guides/SKILL.md#environment-variables-format"
+    - id: has_troubleshooting
+      pattern: "^##?\\s*Troubleshooting"
+      message: "Setup guide should include troubleshooting section"
+      suggestion: "Add common issues and solutions"
+      docs: ".claude/skills/writing-setup-guides/SKILL.md#troubleshooting-format"
+
+output:
+  default_path: "docs/setup.md"
+  naming: null

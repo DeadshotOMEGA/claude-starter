@@ -1,0 +1,46 @@
+name: writing-claudemd
+version: "1.0"
+doc_type: claudemd
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# CLAUDE.md files use location as identifier, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Purpose
+    - name: Key Patterns
+    - name: Critical Guidelines
+    - name: File Structure
+    - name: Notes
+  optional_sections:
+    - name: Common Commands
+    - name: Examples
+    - name: References
+
+validation:
+  rules:
+    - id: has_purpose
+      pattern: "^##?\\s*Purpose"
+      message: "CLAUDE.md must have a Purpose section"
+      suggestion: "Add a 1-line Purpose section describing what the directory/module handles"
+      docs: ".claude/skills/writing-claudemd/SKILL.md#required-sections"
+    - id: is_concise
+      pattern: null
+      message: "CLAUDE.md files should be 20-50 lines for most files"
+      suggestion: "Keep concise; link to detailed docs instead of duplicating"
+      docs: ".claude/skills/writing-claudemd/SKILL.md#keep-it-concise"
+    - id: uses_imperative
+      pattern: null
+      message: "Rules should be stated directly"
+      suggestion: "Use imperative form: 'Use admin client' not 'You might want to use'"
+      docs: ".claude/skills/writing-claudemd/SKILL.md#be-imperative"
+
+output:
+  default_path: "{directory}/CLAUDE.md"
+  naming: null

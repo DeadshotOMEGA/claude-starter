@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "updated": "2025-12-22T05:26:26.943Z",
+  "documents": {
+    "/home/sauk/claudecode/docs/plans/pdocs/investigation.md": {
+      "type": "investigation",
+      "skill": "writing-investigations",
+      "registered": "2025-12-22T04:51:02.724Z",
+      "status": "valid",
+      "lastValidated": "2025-12-22T05:09:28.709Z"
+    },
+    "/tmp/test-pdocs/plan.md": {
+      "type": "plan",
+      "skill": "writing-plans",
+      "registered": "2025-12-22T05:02:54.047Z",
+      "status": "pending"
+    },
+    "/tmp/test-pdocs/user-auth.md": {
+      "type": "investigation",
+      "skill": "writing-investigations",
+      "registered": "2025-12-22T05:03:02.757Z",
+      "status": "pending"
+    },
+    "/tmp/test-plan/plan.md": {
+      "type": "plan",
+      "skill": "writing-plans",
+      "registered": "2025-12-22T05:26:26.943Z",
+      "status": "pending"
+    }
+  },
+  "id_sequences": {
+    "plan": 2,
+    "investigation": 1
+  },
+  "stats": {
+    "total": 4,
+    "valid": 1,
+    "invalid": 0,
+    "pending": 3
+  }
+}

@@ -1,0 +1,51 @@
+name: writing-readmes
+version: "1.0"
+doc_type: readme
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# READMEs use project/package name as identifier, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Title and Description
+    - name: Quick Start
+    - name: Installation
+    - name: Usage
+    - name: Documentation
+    - name: Contributing
+    - name: License
+  optional_sections:
+    - name: Features
+    - name: Screenshots/Demo
+    - name: API Reference
+    - name: FAQ
+    - name: Roadmap
+    - name: Acknowledgments
+
+validation:
+  rules:
+    - id: has_title
+      pattern: "^#\\s+[\\w\\s-]+"
+      message: "README must have a project title"
+      suggestion: "Add a title as the first heading"
+      docs: ".claude/skills/writing-readmes/SKILL.md#required-sections"
+    - id: has_quick_start
+      pattern: "^##?\\s*(Quick Start|Getting Started)"
+      message: "README should have a Quick Start section"
+      suggestion: "Add a Quick Start with 3-5 commands to get running"
+      docs: ".claude/skills/writing-readmes/SKILL.md#keep-quick-start-quick"
+    - id: has_install_commands
+      pattern: "(npm install|yarn add|bun add|pip install|cargo add)"
+      message: "README should include installation commands"
+      suggestion: "Add copy-paste ready installation commands"
+      docs: ".claude/skills/writing-readmes/SKILL.md#show-dont-tell"
+
+output:
+  default_path: "README.md"
+  naming: null

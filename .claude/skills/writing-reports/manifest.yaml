@@ -1,0 +1,49 @@
+name: writing-reports
+version: "1.0"
+doc_type: requirements
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Reports use descriptive names, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Introduction
+      contains: [context, objectives, structure preview]
+    - name: Key Findings
+    - name: Analysis
+    - name: Conclusion
+    - name: References
+  optional_sections:
+    - name: Executive Summary
+    - name: Contradictions/Debates
+    - name: Methodology
+    - name: Limitations
+    - name: Recommendations
+
+validation:
+  rules:
+    - id: has_citations
+      pattern: "\\[\\d+\\]"
+      message: "Report must include citations for claims"
+      suggestion: "Use numbered citations like [1], [2] and list in References"
+      docs: ".claude/skills/writing-reports/SKILL.md#citation-format"
+    - id: has_references
+      pattern: "^##?\\s*References"
+      message: "Report must have a References section"
+      suggestion: "Add References section listing all cited sources"
+      docs: ".claude/skills/writing-reports/SKILL.md#report-structure"
+    - id: has_conclusion
+      pattern: "^##?\\s*Conclusion"
+      message: "Report should have a Conclusion section"
+      suggestion: "Summarize key takeaways and implications"
+      docs: ".claude/skills/writing-reports/SKILL.md#report-structure"
+
+output:
+  default_path: "docs/reports/{name}.md"
+  naming: kebab-case

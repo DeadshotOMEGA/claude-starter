@@ -1,0 +1,5 @@
+name: database-design
+version: 1.0.0
+description: Database architecture patterns and design guidance
+author: project
+dependencies: []

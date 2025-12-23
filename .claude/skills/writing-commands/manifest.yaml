@@ -1,0 +1,45 @@
+name: writing-commands
+version: "1.0"
+doc_type: command
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Commands use filename as identifier, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Frontmatter
+      contains: [description]
+    - name: Command Body
+  optional_sections:
+    - name: Argument Hint
+    - name: Steps
+    - name: Expected Output
+    - name: Pattern References
+
+validation:
+  rules:
+    - id: has_description
+      pattern: "^---\\n[\\s\\S]*?description:\\s*.+"
+      message: "Command must have a description in frontmatter"
+      suggestion: "Add 'description: What this command does' in frontmatter"
+      docs: ".claude/skills/writing-commands/SKILL.md#frontmatter"
+    - id: has_prompt_body
+      pattern: "---\\n[\\s\\S]+$"
+      message: "Command must have a prompt body after frontmatter"
+      suggestion: "Add clear instructions for Claude below the frontmatter"
+      docs: ".claude/skills/writing-commands/SKILL.md#content-structure"
+    - id: uses_arguments_placeholder
+      pattern: "\\$ARGUMENTS"
+      message: "Commands with arguments should use $ARGUMENTS placeholder"
+      suggestion: "Use $ARGUMENTS to capture user input"
+      docs: ".claude/skills/writing-commands/SKILL.md#using-arguments"
+
+output:
+  default_path: ".claude/commands/{name}.md"
+  naming: kebab-case

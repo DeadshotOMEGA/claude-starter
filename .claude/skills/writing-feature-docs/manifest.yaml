@@ -1,0 +1,48 @@
+name: writing-feature-docs
+version: "1.0"
+doc_type: feature-spec
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+id_pattern: "F-{num}"
+id_sequence_key: feature
+
+structure:
+  required_sections:
+    - name: Overview
+    - name: User Perspective
+    - name: Data Flow
+    - name: Implementation
+      contains: [key files, database, configuration]
+    - name: Usage Example
+    - name: Testing
+    - name: Related Documentation
+  optional_sections:
+    - name: Architecture Diagram
+    - name: API Endpoints
+    - name: Edge Cases
+
+validation:
+  rules:
+    - id: has_overview
+      pattern: "^##?\\s*Overview"
+      message: "Feature doc must have an Overview section"
+      suggestion: "Add 1-2 sentences explaining what the feature does and why"
+      docs: ".claude/skills/writing-feature-docs/SKILL.md#required-sections"
+    - id: has_data_flow
+      pattern: "^##?\\s*Data Flow"
+      message: "Feature doc should describe the data flow"
+      suggestion: "Add step-by-step flow through the system"
+      docs: ".claude/skills/writing-feature-docs/SKILL.md#data-flow-format"
+    - id: has_file_paths
+      pattern: "src/[\\w/]+\\.(ts|tsx|js|jsx)"
+      message: "Feature doc should include real file paths"
+      suggestion: "Add key file paths in the Implementation section"
+      docs: ".claude/skills/writing-feature-docs/SKILL.md#implementation-section"
+
+output:
+  default_path: "docs/features/{name}.md"
+  naming: kebab-case

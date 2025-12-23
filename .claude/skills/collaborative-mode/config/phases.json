@@ -1,0 +1,235 @@
+{
+  "phases": {
+    "understanding": {
+      "description": "Clarify what we're building and why",
+      "order": 1,
+      "categories": [
+        {
+          "id": "scope",
+          "name": "Scope & Boundaries",
+          "purpose": "Define what's in/out, core problem being solved, scope flexibility",
+          "plan_section": "overview.scope"
+        },
+        {
+          "id": "users",
+          "name": "Users & Stakeholders",
+          "purpose": "Identify who benefits, their skill levels, secondary stakeholders affected",
+          "plan_section": "overview.users"
+        },
+        {
+          "id": "success",
+          "name": "Success Criteria",
+          "purpose": "Define measurable outcomes, specific targets, minimum viable result",
+          "plan_section": "overview.success_criteria"
+        },
+        {
+          "id": "constraints",
+          "name": "Constraints",
+          "purpose": "Surface technical limitations, timeline pressures, existing technical debt",
+          "plan_section": "overview.constraints"
+        },
+        {
+          "id": "dependencies",
+          "name": "Dependencies",
+          "purpose": "Map what blocks this work and what this work blocks, external dependencies",
+          "plan_section": "overview.dependencies"
+        },
+        {
+          "id": "current_state",
+          "name": "Current Workarounds",
+          "purpose": "Understand what users do today and why it's insufficient",
+          "plan_section": "overview.current_state"
+        },
+        {
+          "id": "prior_attempts",
+          "name": "Prior Attempts",
+          "purpose": "Learn from past failures, abandoned approaches, why they didn't work",
+          "plan_section": "overview.prior_attempts"
+        },
+        {
+          "id": "urgency",
+          "name": "Urgency & Why Now",
+          "purpose": "Understand timing drivers, consequences of delay, prioritization context",
+          "plan_section": "overview.urgency"
+        }
+      ]
+    },
+    "exploration": {
+      "description": "Investigate codebase and document findings",
+      "order": 2,
+      "spawn_agents": ["codebase-explorer"],
+      "categories": [
+        {
+          "id": "affected_areas",
+          "name": "Affected Areas",
+          "purpose": "Confirm discovered files, identify additional areas user knows about, flag fragile areas",
+          "plan_section": "impact.affected_areas",
+          "ask_after": "codebase-explorer"
+        },
+        {
+          "id": "patterns",
+          "name": "Patterns & Conventions",
+          "purpose": "Decide whether to follow, extend, or replace existing patterns found",
+          "plan_section": "implementation.patterns",
+          "ask_after": "codebase-explorer"
+        },
+        {
+          "id": "integration",
+          "name": "Integration Points",
+          "purpose": "Surface API impacts, service boundaries, potential breaking changes",
+          "plan_section": "impact.integration_points",
+          "ask_after": "codebase-explorer"
+        },
+        {
+          "id": "data",
+          "name": "Data & State",
+          "purpose": "Identify schema changes, migrations needed, state management implications",
+          "plan_section": "implementation.data"
+        },
+        {
+          "id": "testing",
+          "name": "Testing Considerations",
+          "purpose": "Define test strategy, identify tests needing updates, hard-to-test areas",
+          "plan_section": "validation.testing"
+        },
+        {
+          "id": "risks",
+          "name": "Risk Areas",
+          "purpose": "Identify fragile code, known bugs nearby, areas needing extra care",
+          "plan_section": "impact.risks"
+        },
+        {
+          "id": "undocumented",
+          "name": "Undocumented Behavior",
+          "purpose": "Surface tribal knowledge, hidden assumptions, surprising behaviors",
+          "plan_section": "impact.undocumented"
+        },
+        {
+          "id": "external",
+          "name": "External Services",
+          "purpose": "Map third-party dependencies, rate limits, reliability concerns",
+          "plan_section": "impact.external_services"
+        }
+      ]
+    },
+    "design": {
+      "description": "Make implementation decisions and document rationale",
+      "order": 3,
+      "spawn_agents": ["architecture-advisor", "ux-planner"],
+      "categories": [
+        {
+          "id": "approach",
+          "name": "Implementation Approach",
+          "purpose": "Choose between recommended approaches, document rejected alternatives with rationale",
+          "plan_section": "implementation.approach",
+          "ask_after": "architecture-advisor"
+        },
+        {
+          "id": "performance",
+          "name": "Performance Requirements",
+          "purpose": "Define performance targets, caching strategy, performance priority level",
+          "plan_section": "requirements.performance"
+        },
+        {
+          "id": "security",
+          "name": "Security Requirements",
+          "purpose": "Define auth needs, sensitive data handling, input validation concerns",
+          "plan_section": "requirements.security"
+        },
+        {
+          "id": "error_handling",
+          "name": "Error Handling",
+          "purpose": "Define failure modes, error strategy, logging and alerting requirements",
+          "plan_section": "implementation.error_handling"
+        },
+        {
+          "id": "rollout",
+          "name": "Rollout Strategy",
+          "purpose": "Plan deployment approach, feature flags, rollback procedures, migration steps",
+          "plan_section": "implementation.rollout"
+        },
+        {
+          "id": "ux",
+          "name": "User Experience",
+          "purpose": "Define loading states, empty states, error UX, accessibility requirements",
+          "plan_section": "implementation.ux",
+          "condition": "has_ui_component",
+          "ask_after": "ux-planner"
+        },
+        {
+          "id": "maintainability",
+          "name": "Maintainability",
+          "purpose": "Identify long-term owners, complexity budget, documentation needs",
+          "plan_section": "implementation.maintainability"
+        },
+        {
+          "id": "observability",
+          "name": "Observability",
+          "purpose": "Plan production debugging approach, monitoring, logging strategy",
+          "plan_section": "implementation.observability"
+        },
+        {
+          "id": "extensibility",
+          "name": "Future Extensibility",
+          "purpose": "Anticipate likely changes, design for flexibility without over-engineering",
+          "plan_section": "implementation.extensibility"
+        }
+      ]
+    },
+    "review": {
+      "description": "Reconcile discoveries with initial assumptions, ensure plan coherence",
+      "order": 4,
+      "categories": [
+        {
+          "id": "scope_check",
+          "name": "Scope Reconciliation",
+          "purpose": "Compare current scope with original—identify growth, shrinkage, or shift",
+          "plan_section": "review.scope_changes",
+          "compares": ["overview.scope", "impact.affected_areas"]
+        },
+        {
+          "id": "success_check",
+          "name": "Success Criteria Validation",
+          "purpose": "Verify original success criteria are still achievable and measurable given discoveries",
+          "plan_section": "review.success_validation",
+          "compares": ["overview.success_criteria", "requirements.performance", "implementation.approach"]
+        },
+        {
+          "id": "constraint_check",
+          "name": "Constraint Review",
+          "purpose": "Surface new constraints discovered, validate original constraints still apply",
+          "plan_section": "review.constraint_changes",
+          "compares": ["overview.constraints", "impact.risks", "impact.external_services"]
+        },
+        {
+          "id": "dependency_check",
+          "name": "Dependency Review",
+          "purpose": "Identify new blockers discovered, verify original dependencies still accurate",
+          "plan_section": "review.dependency_changes",
+          "compares": ["overview.dependencies", "impact.integration_points", "implementation.data"]
+        },
+        {
+          "id": "risk_summary",
+          "name": "Risk Assessment",
+          "purpose": "Aggregate all risks discovered across phases, prioritize concerns",
+          "plan_section": "review.risk_summary",
+          "compares": ["impact.risks", "impact.undocumented", "implementation.error_handling"]
+        },
+        {
+          "id": "feasibility",
+          "name": "Feasibility Check",
+          "purpose": "Given everything learned, assess if work is still feasible as scoped or needs re-scoping",
+          "plan_section": "review.feasibility",
+          "compares": ["overview.scope", "overview.constraints", "review.risk_summary"]
+        },
+        {
+          "id": "open_questions",
+          "name": "Open Questions",
+          "purpose": "Document what remains unknown, what assumptions we're proceeding with",
+          "plan_section": "review.open_questions"
+        }
+      ]
+    }
+  },
+  "total_categories": 32
+}

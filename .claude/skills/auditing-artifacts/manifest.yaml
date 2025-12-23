@@ -1,0 +1,63 @@
+name: auditing-artifacts
+version: 1.0.0
+description: Audit Claude Code artifacts using standardized 20-point scoring rubric
+
+artifact_types:
+  - commands
+  - agents
+  - skills
+  - hooks
+  - claudemd
+  - rules
+
+criteria_files:
+  commands: criteria/commands.md
+  agents: criteria/agents.md
+  skills: criteria/skills.md
+  hooks: criteria/hooks.md
+  claudemd: criteria/claudemd.md
+  rules: criteria/rules.md
+
+templates:
+  audit_report: templates/audit-report.md
+
+scoring:
+  max_score: 20
+  categories:
+    structure:
+      max: 5
+      weight: 0.25
+    clarity:
+      max: 4
+      weight: 0.20
+    technical:
+      max: 5
+      weight: 0.25
+    operational:
+      max: 4
+      weight: 0.20
+    maintainability:
+      max: 2
+      weight: 0.10
+
+grading_scale:
+  A: [18, 20]
+  B: [15, 17]
+  C: [12, 14]
+  D: [9, 11]
+  F: [0, 8]
+
+auto_detection:
+  - pattern: ".claude/commands/*.md"
+    type: commands
+  - pattern: ".claude/agents/*.md"
+    type: agents
+  - pattern: ".claude/skills/*/SKILL.md"
+    type: skills
+  - pattern: "settings.json"
+    type: hooks
+    context_required: true
+  - pattern: "**/CLAUDE.md"
+    type: claudemd
+  - pattern: ".claude/rules/*.md"
+    type: rules

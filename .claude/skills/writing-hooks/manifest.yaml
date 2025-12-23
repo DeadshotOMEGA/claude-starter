@@ -1,0 +1,48 @@
+name: writing-hooks
+version: "1.0"
+doc_type: command
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Hooks are configured in settings.json, not standalone documents
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Hook Event
+    - name: Matcher
+    - name: Command
+  optional_sections:
+    - name: Script Implementation
+    - name: Environment Variables
+
+validation:
+  rules:
+    - id: valid_event
+      pattern: "(SessionStart|SessionEnd|UserPromptSubmit|PreToolUse|PostToolUse|SubagentStop|Stop|Notification)"
+      message: "Hook must use a valid event name"
+      suggestion: "Use one of: SessionStart, SessionEnd, UserPromptSubmit, PreToolUse, PostToolUse, SubagentStop, Stop, Notification"
+      docs: ".claude/skills/writing-hooks/SKILL.md#hook-events"
+    - id: has_command_type
+      pattern: "\"type\":\\s*\"command\""
+      message: "Hook must specify type as 'command'"
+      suggestion: "Add '\"type\": \"command\"' to hook configuration"
+      docs: ".claude/skills/writing-hooks/SKILL.md#structure"
+    - id: script_executable
+      pattern: null
+      message: "Hook scripts must be executable"
+      suggestion: "Run chmod +x on hook script files"
+      docs: ".claude/skills/writing-hooks/SKILL.md#script-requirements"
+
+output:
+  default_path: ".claude/settings.json"
+  naming: null
+
+metadata:
+  type: config-skill
+  config_location: ".claude/settings.json"
+  key: hooks

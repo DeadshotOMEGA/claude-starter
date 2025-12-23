@@ -1,0 +1,47 @@
+name: writing-investigations
+version: "1.0"
+doc_type: investigation
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+id_pattern: "INV-{num}"
+id_sequence_key: investigation
+
+structure:
+  required_sections:
+    - name: Goal
+    - name: Related Docs
+      contains: [specs, requirements, designs]
+    - name: Key Files
+      contains: [file paths, line numbers]
+    - name: Database Tables
+      contains: [schema]
+    - name: Data Flow
+      contains: [steps, file references]
+    - name: Patterns to Follow
+    - name: Integration Points
+    - name: Notes
+      contains: [gotchas, edge cases]
+  optional_sections:
+    - name: Open Questions
+    - name: Assumptions
+
+validation:
+  rules:
+    - id: has_file_references
+      pattern: "[\\w/]+\\.(ts|tsx|js|jsx|py|go|rs):\\d+"
+      message: "Investigation should include file references with line numbers"
+      suggestion: "Use format: path/to/file.ts:45 for precise references"
+      docs: ".claude/skills/writing-investigations/SKILL.md#file-reference-format"
+    - id: has_goal
+      pattern: "^##?\\s*Goal"
+      message: "Investigation must have a Goal section"
+      suggestion: "Add a Goal section with a one-sentence description"
+      docs: ".claude/skills/writing-investigations/SKILL.md#required-sections"
+
+output:
+  default_path: "docs/investigations/{name}.md"
+  naming: kebab-case

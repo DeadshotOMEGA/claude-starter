@@ -1,0 +1,50 @@
+name: writing-api-endpoints
+version: "1.0"
+doc_type: api-contract
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# API endpoints use path as identifier, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Overview
+    - name: Endpoint Details
+      contains: [path, method, auth, rate limiting]
+    - name: Request
+      contains: [headers, parameters, body schema, example]
+    - name: Response
+      contains: [success, errors]
+    - name: Implementation Files
+    - name: Usage Examples
+  optional_sections:
+    - name: Rate Limiting
+    - name: Pagination
+    - name: Versioning
+
+validation:
+  rules:
+    - id: has_endpoint_path
+      pattern: "(GET|POST|PUT|PATCH|DELETE)\\s+[/\\w\\{\\}]+"
+      message: "API doc must specify HTTP method and path"
+      suggestion: "Add endpoint like 'POST /api/v1/users'"
+      docs: ".claude/skills/writing-api-endpoints/SKILL.md#required-sections"
+    - id: has_request_schema
+      pattern: "(interface|type)\\s+\\w+Request"
+      message: "API doc should include TypeScript request schema"
+      suggestion: "Add TypeScript interface for request body"
+      docs: ".claude/skills/writing-api-endpoints/SKILL.md#request-documentation-format"
+    - id: has_error_responses
+      pattern: "(400|401|403|404|500)"
+      message: "API doc should document error responses"
+      suggestion: "Add table of possible error status codes"
+      docs: ".claude/skills/writing-api-endpoints/SKILL.md#response-documentation-format"
+
+output:
+  default_path: "docs/api/{name}.md"
+  naming: kebab-case

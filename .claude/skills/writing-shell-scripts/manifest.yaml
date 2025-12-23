@@ -1,0 +1,40 @@
+name: writing-shell-scripts
+version: "1.0"
+doc_type: skill
+
+template:
+  file: null
+  format: null
+  remote: null
+
+# Code-focused skill - does not produce registered documents
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections: []
+  optional_sections: []
+
+# No document validation - this is a code skill
+validation:
+  rules: []
+
+# Code skill - outputs are code changes, not documents
+output:
+  default_path: null
+  naming: null
+
+metadata:
+  type: code-skill
+  focus:
+    - POSIX compliance
+    - error handling
+    - process management
+    - text processing
+    - system integration
+  patterns:
+    - strict mode (set -euo pipefail)
+    - variable quoting
+    - input validation
+    - trap for cleanup
+    - function structure

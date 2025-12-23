@@ -1,0 +1,100 @@
+{
+  "description": "Mandatory exit steps - all must be executed before leaving collaborative mode",
+  "steps": [
+    {
+      "order": 1,
+      "id": "calculate_risk",
+      "name": "Calculate Risk Level",
+      "action": "Run scripts/calculate-risk.py with discovered files",
+      "command": "python .claude/skills/collaborative-mode/scripts/calculate-risk.py --files {discovered_files}",
+      "output": "risk_level",
+      "required": true
+    },
+    {
+      "order": 2,
+      "id": "check_branch",
+      "name": "Check Current Branch",
+      "action": "Get current git branch",
+      "command": "git branch --show-current",
+      "output": "current_branch",
+      "required": true
+    },
+    {
+      "order": 3,
+      "id": "branch_suggestion",
+      "name": "Branch Suggestion",
+      "action": "Suggest feature branch if HIGH risk and on main/develop",
+      "condition": "risk_level == 'HIGH' AND current_branch IN ['main', 'develop', 'master']",
+      "ask_user": {
+        "question": "This work is high-risk. Create a feature branch before implementation?",
+        "options": [
+          {"label": "Yes, create feature/{slug}", "action": "spawn_git_manager"},
+          {"label": "No, I'll handle branching", "action": "continue"},
+          {"label": "Stay in collaborative mode", "action": "return_to_phase"}
+        ]
+      },
+      "required": true
+    },
+    {
+      "order": 4,
+      "id": "finalize_plan",
+      "name": "Finalize Plan",
+      "action": "Spawn implementation-planner to create task breakdown",
+      "agent": {
+        "type": "implementation-planner",
+        "prompt_template": "Finalize task breakdown in {plan_path}. Include all context gathered: {session_summary}"
+      },
+      "required": true
+    },
+    {
+      "order": 5,
+      "id": "implementation_decision",
+      "name": "Implementation Decision",
+      "action": "Ask user how to proceed with implementation",
+      "ask_user": {
+        "question": "Plan complete. How would you like to proceed?",
+        "options": [
+          {"label": "Orchestrate implementation", "action": "spawn_orchestrate_workflow"},
+          {"label": "Manual implementation", "action": "output_handoff"},
+          {"label": "Stay in collaborative mode", "action": "return_to_phase"}
+        ]
+      },
+      "required": true
+    },
+    {
+      "order": 6,
+      "id": "handoff",
+      "name": "Execute Handoff",
+      "action": "Execute based on user's implementation decision",
+      "actions": {
+        "spawn_orchestrate_workflow": {
+          "agent": {
+            "type": "orchestrate-workflow",
+            "prompt_template": "Execute plan at {plan_path}"
+          }
+        },
+        "output_handoff": {
+          "template": "templates/handoff-summary.md"
+        },
+        "return_to_phase": {
+          "ask_user": {
+            "question": "Which phase would you like to return to?",
+            "options": ["Understanding", "Exploration", "Design", "Review"]
+          }
+        }
+      },
+      "required": true
+    },
+    {
+      "order": 7,
+      "id": "end_session",
+      "name": "End Session",
+      "action": "Set session state to inactive",
+      "state_update": {
+        "active": false
+      },
+      "skip_if": "return_to_phase",
+      "required": true
+    }
+  ]
+}

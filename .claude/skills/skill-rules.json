@@ -1,0 +1,95 @@
+{
+  "version": "1.0",
+  "skills": {
+    "crafting-prompts": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["prompt", "prompting", "system prompt"],
+        "intentPatterns": ["write.*prompt", "craft.*prompt", "improve.*prompt", "better.*prompt"]
+      }
+    },
+    "referencing-typescript-sdk": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["agent sdk", "claude sdk", "anthropic sdk", "@anthropic-ai/claude-agent"],
+        "intentPatterns": ["build.*agent", "create.*agent", "programmatic.*claude"]
+      }
+    },
+    "orchestrating-workflows": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["orchestrate", "orchestration", "workflow", "multi-agent"],
+        "intentPatterns": ["coordinate.*agents", "sequence.*tasks", "complex.*workflow"]
+      }
+    },
+    "executing-parallel-work": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["parallel", "concurrent", "simultaneously"],
+        "intentPatterns": ["run.*parallel", "execute.*concurrent", "multiple.*agents"]
+      }
+    },
+    "writing-skills": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["skill", "create skill", "new skill", "manage skill"],
+        "intentPatterns": ["package.*expertise", "reusable.*capability"]
+      }
+    },
+    "testing-playwright": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["playwright", "e2e", "browser test", "end-to-end"],
+        "intentPatterns": ["test.*ui", "verify.*page", "check.*browser", "automate.*browser"]
+      }
+    },
+    "managing-memory": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "promptTriggers": {
+        "keywords": ["claude.md", "memory", "rules"],
+        "intentPatterns": ["manage.*memory", "audit.*rules", "organize.*claude"]
+      }
+    },
+    "processing-spreadsheets": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "keywords": ["xlsx", "excel", "spreadsheet", "csv", "tsv"],
+        "intentPatterns": ["create.*spreadsheet", "read.*excel", "analyze.*data.*excel", "export.*csv"]
+      }
+    },
+    "auditing-security": {
+      "type": "guardrail",
+      "enforcement": "suggest",
+      "priority": "critical",
+      "promptTriggers": {
+        "keywords": ["security", "vulnerability", "cve", "owasp", "audit security", "penetration"],
+        "intentPatterns": ["review.*security", "find.*vulnerabilities", "security.*assessment", "check.*secure"]
+      }
+    },
+    "writing-commit-messages": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "low",
+      "promptTriggers": {
+        "keywords": ["commit message", "git commit"],
+        "intentPatterns": ["write.*commit", "generate.*commit.*message", "help.*commit"]
+      }
+    }
+  }
+}

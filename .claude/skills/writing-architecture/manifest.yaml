@@ -1,0 +1,52 @@
+name: writing-architecture
+version: "1.0"
+doc_type: plan
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Architecture docs typically named architecture.md, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Overview
+    - name: Tech Stack
+    - name: Architecture Diagram
+    - name: Core Layers
+      contains: [presentation, business logic, data access]
+    - name: Data Flow Patterns
+      contains: [read operations, write operations]
+    - name: Security Architecture
+      contains: [auth, authorization, data isolation]
+    - name: Performance Considerations
+    - name: Key Design Decisions
+  optional_sections:
+    - name: Infrastructure
+    - name: Monitoring
+    - name: Future Considerations
+
+validation:
+  rules:
+    - id: has_overview
+      pattern: "^##?\\s*Overview"
+      message: "Architecture doc must have an Overview section"
+      suggestion: "Add high-level purpose and philosophy"
+      docs: ".claude/skills/writing-architecture/SKILL.md#required-sections"
+    - id: has_layers
+      pattern: "(Presentation|Business Logic|Data Access)\\s*(Layer)?"
+      message: "Architecture doc should describe core layers"
+      suggestion: "Document presentation, business logic, and data access layers"
+      docs: ".claude/skills/writing-architecture/SKILL.md#layer-documentation-format"
+    - id: has_design_decisions
+      pattern: "^##?.*Design Decision"
+      message: "Architecture doc should include key design decisions"
+      suggestion: "Use format: Context, Decision, Consequences"
+      docs: ".claude/skills/writing-architecture/SKILL.md#design-decision-format"
+
+output:
+  default_path: "docs/architecture.md"
+  naming: null

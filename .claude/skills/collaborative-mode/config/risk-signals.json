@@ -1,0 +1,120 @@
+{
+  "risk_levels": {
+    "HIGH": {
+      "description": "Significant risk - branch recommended before implementation",
+      "threshold": "Any HIGH signal OR 3+ MODERATE signals",
+      "triggers_branch_suggestion": true
+    },
+    "MODERATE": {
+      "description": "Notable risk - proceed with caution",
+      "threshold": "Any MODERATE signal without HIGH signals",
+      "triggers_branch_suggestion": false
+    },
+    "LOW": {
+      "description": "Minimal risk - standard implementation",
+      "threshold": "No HIGH or MODERATE signals",
+      "triggers_branch_suggestion": false
+    }
+  },
+  "signals": {
+    "HIGH": [
+      {
+        "id": "file_count",
+        "name": "Large file scope",
+        "condition": "Affects 10+ files",
+        "weight": 1
+      },
+      {
+        "id": "core_utilities",
+        "name": "Core utility modification",
+        "condition": "Modifies shared/core utilities used across codebase",
+        "weight": 1
+      },
+      {
+        "id": "schema_changes",
+        "name": "Database schema changes",
+        "condition": "Requires database migrations or schema modifications",
+        "weight": 1
+      },
+      {
+        "id": "breaking_api",
+        "name": "Breaking API changes",
+        "condition": "Modifies public APIs in non-backwards-compatible ways",
+        "weight": 1
+      },
+      {
+        "id": "security_changes",
+        "name": "Security-related modifications",
+        "condition": "Touches authentication, authorization, or sensitive data handling",
+        "weight": 1
+      },
+      {
+        "id": "major_refactor",
+        "name": "Significant refactoring",
+        "condition": "Restructures existing patterns or architecture",
+        "weight": 1
+      },
+      {
+        "id": "data_migration",
+        "name": "Data migration required",
+        "condition": "Requires migrating existing user/production data",
+        "weight": 1
+      },
+      {
+        "id": "external_service_changes",
+        "name": "External service modifications",
+        "condition": "Changes integration with third-party services",
+        "weight": 1
+      }
+    ],
+    "MODERATE": [
+      {
+        "id": "medium_file_count",
+        "name": "Medium file scope",
+        "condition": "Affects 5-9 files",
+        "weight": 1
+      },
+      {
+        "id": "multi_module",
+        "name": "Cross-module changes",
+        "condition": "Touches multiple distinct modules/domains",
+        "weight": 1
+      },
+      {
+        "id": "new_feature_integration",
+        "name": "New feature touching existing code",
+        "condition": "New feature that integrates with existing functionality",
+        "weight": 1
+      },
+      {
+        "id": "state_management",
+        "name": "State management changes",
+        "condition": "Modifies global/shared state management",
+        "weight": 1
+      },
+      {
+        "id": "test_updates",
+        "name": "Significant test updates",
+        "condition": "Requires updating multiple existing test files",
+        "weight": 1
+      },
+      {
+        "id": "config_changes",
+        "name": "Configuration changes",
+        "condition": "Modifies environment variables, config files, or feature flags",
+        "weight": 1
+      },
+      {
+        "id": "performance_sensitive",
+        "name": "Performance-sensitive area",
+        "condition": "Touches code paths with strict performance requirements",
+        "weight": 1
+      }
+    ]
+  },
+  "file_count_thresholds": {
+    "LOW": {"min": 1, "max": 4},
+    "MODERATE": {"min": 5, "max": 9},
+    "HIGH": {"min": 10, "max": null}
+  }
+}

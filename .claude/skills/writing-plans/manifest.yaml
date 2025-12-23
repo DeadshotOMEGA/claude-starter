@@ -1,0 +1,47 @@
+name: writing-plans
+version: "1.0"
+doc_type: plan
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+id_pattern: "P-{num}"
+id_sequence_key: plan
+
+structure:
+  required_sections:
+    - name: Summary
+      contains: [goal, type, scope]
+    - name: Relevant Context
+      contains: [requirements, investigations, specs]
+    - name: Current System Overview
+    - name: Implementation Plan
+      contains: [task breakdown]
+    - name: Parallelization
+      contains: [batches, independent tasks]
+    - name: Testing Strategy
+    - name: Impact Analysis
+      contains: [affected files, breaking changes]
+  optional_sections:
+    - name: Dependencies
+    - name: Risk Assessment
+    - name: Timeline
+
+validation:
+  rules:
+    - id: has_task_table
+      pattern: "\\|\\s*ID\\s*\\|.*\\|\\s*Description\\s*\\|"
+      message: "Plan must include task breakdown table"
+      suggestion: "Add a task table with columns: ID, Description, Agent, Deps, Files, Exit Criteria"
+      docs: ".claude/skills/writing-plans/SKILL.md#task-breakdown-format"
+    - id: has_exit_criteria
+      pattern: "Exit Criteria"
+      message: "Tasks should have exit criteria"
+      suggestion: "Include concrete exit criteria for each task"
+      docs: ".claude/skills/writing-plans/SKILL.md#task-breakdown-format"
+
+output:
+  default_path: "docs/plans/{name}.md"
+  naming: kebab-case

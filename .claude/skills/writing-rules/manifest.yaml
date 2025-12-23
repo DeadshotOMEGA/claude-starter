@@ -1,0 +1,43 @@
+name: writing-rules
+version: "1.0"
+doc_type: rule
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Rules use filename as identifier, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Title
+    - name: Rule Bullets
+  optional_sections:
+    - name: Frontmatter
+      contains: [paths]
+    - name: Subsections
+
+validation:
+  rules:
+    - id: has_title
+      pattern: "^#\\s+[\\w\\s]+"
+      message: "Rule file must have a title heading"
+      suggestion: "Add a title like '# Testing Conventions'"
+      docs: ".claude/skills/writing-rules/SKILL.md#content-structure"
+    - id: uses_imperative
+      pattern: null
+      message: "Rules should use imperative statements"
+      suggestion: "Use 'Use UTC for timestamps' not 'You should consider using'"
+      docs: ".claude/skills/writing-rules/SKILL.md#imperative-statements"
+    - id: path_pattern_valid
+      pattern: "^---\\n[\\s\\S]*?paths:\\s*\"[\\w\\*\\/\\.\\{\\},\\s]+\""
+      message: "Path patterns should be valid glob patterns"
+      suggestion: "Use patterns like '**/*.test.ts' or 'src/lib/**/*.ts'"
+      docs: ".claude/skills/writing-rules/SKILL.md#path-patterns"
+
+output:
+  default_path: ".claude/rules/{name}.md"
+  naming: kebab-case

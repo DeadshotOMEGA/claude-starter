@@ -1,0 +1,52 @@
+name: writing-skills
+version: "1.0"
+doc_type: skill
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+# Skills use directory name as identifier, no sequential ID
+id_pattern: null
+id_sequence_key: null
+
+structure:
+  required_sections:
+    - name: Frontmatter
+      contains: [name, description]
+    - name: Quick Start
+    - name: Detailed Guide
+  optional_sections:
+    - name: Contents
+    - name: Supporting Files
+    - name: Examples
+    - name: Testing
+    - name: Best Practices
+
+validation:
+  rules:
+    - id: has_frontmatter_name
+      pattern: "^---\\n[\\s\\S]*?name:\\s*[\\w-]+"
+      message: "Skill must have a name field in frontmatter"
+      suggestion: "Add 'name: skill-name' in YAML frontmatter"
+      docs: ".claude/skills/writing-skills/SKILL.md#skillmd-requirements"
+    - id: has_frontmatter_description
+      pattern: "^---\\n[\\s\\S]*?description:\\s*.+"
+      message: "Skill must have a description field in frontmatter"
+      suggestion: "Add description with what it does AND when to use it"
+      docs: ".claude/skills/writing-skills/SKILL.md#description-field"
+    - id: action_first_naming
+      pattern: "^---\\n[\\s\\S]*?name:\\s*[a-z]+-[a-z]+"
+      message: "Skill names should use action-first naming (verb-ing + noun)"
+      suggestion: "Use format like 'processing-pdfs', 'writing-documentation'"
+      docs: ".claude/skills/writing-skills/SKILL.md#name-field"
+    - id: description_third_person
+      pattern: "description:\\s*[A-Z][^.]+\\."
+      message: "Description should be in third person"
+      suggestion: "Write 'Processes files...' not 'I can help you process...'"
+      docs: ".claude/skills/writing-skills/SKILL.md#description-field"
+
+output:
+  default_path: ".claude/skills/{name}/SKILL.md"
+  naming: kebab-case

@@ -1,0 +1,48 @@
+name: writing-requirements
+version: "1.0"
+doc_type: requirements
+
+template:
+  file: template.md
+  format: markdown
+  remote: null
+
+id_pattern: "REQ-{num}"
+id_sequence_key: requirements
+
+structure:
+  required_sections:
+    - name: Overview
+      contains: [purpose, user benefit, problem solved]
+    - name: Edge Cases
+      contains: [empty state, error state, loading state, performance]
+    - name: Functional Requirements
+      contains: [user interactions, data requirements, API specs, UI specs]
+    - name: Technical Requirements
+      contains: [performance, security, integration points]
+    - name: Implementation Notes
+      contains: [patterns, technology choices]
+    - name: Out of Scope
+    - name: Success Criteria
+    - name: Relevant Files
+  optional_sections:
+    - name: Assumptions
+    - name: Dependencies
+    - name: Acceptance Criteria
+
+validation:
+  rules:
+    - id: has_success_criteria
+      pattern: "^##?\\s*(Success Criteria|Acceptance Criteria)"
+      message: "Requirements must define success criteria"
+      suggestion: "Add measurable success criteria or Given/When/Then acceptance tests"
+      docs: ".claude/skills/writing-requirements/SKILL.md#writing-effective-requirements"
+    - id: has_out_of_scope
+      pattern: "^##?\\s*Out of Scope"
+      message: "Requirements should explicitly define what is out of scope"
+      suggestion: "Add an Out of Scope section listing excluded items"
+      docs: ".claude/skills/writing-requirements/SKILL.md#required-sections"
+
+output:
+  default_path: "docs/requirements/{name}.md"
+  naming: kebab-case

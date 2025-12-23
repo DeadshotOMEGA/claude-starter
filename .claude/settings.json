@@ -1,0 +1,193 @@
+{
+  "cleanupPeriodDays": 30,
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Edit(*)",
+      "WebFetch",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(git:*)",
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(rg:*)",
+      "Bash(pnpm:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(claude:*)",
+      "Bash(wait:*)",
+      "Write(*)",
+      "Search",
+      "WebSearch",
+      "WebFetch(domain:*)",
+      "Context7(resolve-library-id:*)",
+      "Context7(get-library-docs:*)",
+      "Read(**)",
+      "Edit(**)",
+      "MultiEdit(**)",
+      "Write(**)",
+      "Glob(**)",
+      "Grep(**)",
+      "LS(**)",
+      "TodoRead",
+      "TodoWrite(**)",
+      "Task(**)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git show:*)",
+      "Bash(git blame:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote -v:*)",
+      "Bash(git config --get:*)",
+      "Bash(cat:*)",
+      "Bash(less:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Bash(pwd:*)",
+      "Bash(wc:*)",
+      "Bash(diff:*)",
+      "Bash(sed -n:*)",
+      "Bash(awk:*)",
+      "Bash(cut:*)",
+      "Bash(sort:*)",
+      "Bash(uniq:*)",
+      "Bash(basename:*)",
+      "Bash(dirname:*)",
+      "Bash(realpath:*)",
+      "Bash(readlink:*)",
+      "Bash(curl:*)",
+      "Bash(jq:*)",
+      "Bash(yq eval:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(npm list:*)",
+      "Bash(npm run:*)",
+      "Bash(bun:*)",
+      "Bash(gh:*)",
+      "Bash(black --check:*)",
+      "Bash(black --diff:*)",
+      "Bash(pylint:*)",
+      "Bash(flake8:*)",
+      "Bash(mypy:*)",
+      "Bash(eslint:*)",
+      "Bash(pytest:*)",
+      "Bash(bunx playwright:*)",
+      "Bash(make test:*)",
+      "Bash(npm test:*)",
+      "Bash(make -n:*)",
+      "Bash(man:*)",
+      "Bash(pydoc:*)",
+      "Bash(which:*)",
+      "Bash(type:*)",
+      "Bash(echo:*)",
+      "Bash(printf:*)",
+      "Bash(test:*)",
+      "Bash(true:*)",
+      "Bash(false:*)",
+      "mcp__json-mcp__json_read",
+      "mcp__json-mcp__json_stats",
+      "mcp__json-mcp__json_query",
+      "mcp__json-mcp__json_filter",
+      "mcp__json-mcp__json_slice",
+      "mcp__json-mcp__json_search",
+      "mcp__json-mcp__json_transform",
+      "mcp__json-mcp__json_validate",
+      "mcp__sql__execute-sql",
+      "mcp__sql__describe-table",
+      "mcp__sql__describe-functions",
+      "mcp__sql__list-tables",
+      "mcp__sql__get-function-definition",
+      "mcp__sql__upload-file",
+      "mcp__sql__delete-file",
+      "mcp__sql__list-files",
+      "mcp__sql__download-file",
+      "mcp__sql__create-bucket",
+      "mcp__sql__delete-bucket",
+      "mcp__sql__move-file",
+      "mcp__sql__copy-file",
+      "mcp__sql__generate-signed-url",
+      "mcp__sql__get-file-info",
+      "mcp__sql__list-buckets",
+      "mcp__sql__empty-bucket",
+      "mcp__ide__getDiagnostics",
+      "mcp__ide__executeCode"
+    ]
+  },
+  "model": "opus",
+  "hooks": {
+    "SubagentStop": [{
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "Evaluate if this subagent should stop. Input: $ARGUMENTS\n\nRules:\n1. If stop_hook_active is true, ALWAYS approve (prevents infinite loops)\n2. Block only if subagent stopped mid-task with obvious unresolved errors\n3. Approve if task appears complete or naturally concluded\n4. When in doubt, approve\n\nReturn: {\"decision\": \"approve\" or \"block\", \"reason\": \"brief explanation\"}",
+          "timeout": 30
+        },
+        {
+          "type": "command",
+          "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh"
+        }
+      ]
+    }],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SOUND_REPEAT=2 \"$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SOUND_REPEAT=3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "elicitation_dialog",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SOUND_REPEAT=3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh\""
+          }
+        ]
+      },
+      {
+        "matcher": "auth_success",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CLAUDE_SOUND_REPEAT=1 \"$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh\""
+          }
+        ]
+      }
+    ]
+  },
+  "alwaysThinkingEnabled": true,
+  "statusLine": {
+    "type": "command",
+    "command": "$CLAUDE_PROJECT_DIR/.claude/skills/collaborative-mode/scripts/collab-statusline.sh",
+    "padding": 0
+  }
+}
