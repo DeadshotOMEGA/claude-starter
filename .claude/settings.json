@@ -122,6 +122,17 @@
   },
   "model": "opus",
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/error-learning/hook.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "SubagentStop": [{
       "hooks": [
         {
@@ -178,7 +189,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "CLAUDE_SOUND_REPEAT=1 \"$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh\""
+            "command": "CLAUDE_SOUND_TYPE=success CLAUDE_SOUND_REPEAT=1 \"$CLAUDE_PROJECT_DIR/.claude/hooks/notifications/sound-manager.sh\""
           }
         ]
       }
@@ -187,7 +198,7 @@
   "alwaysThinkingEnabled": true,
   "statusLine": {
     "type": "command",
-    "command": "$CLAUDE_PROJECT_DIR/.claude/skills/collaborative-mode/scripts/collab-statusline.sh",
+    "command": "$CLAUDE_PROJECT_DIR/.claude/skills/collaborative-mode/scripts/collab-statusline.py",
     "padding": 0
   }
 }
