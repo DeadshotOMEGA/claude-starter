@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# Project Folders
+projects/
+
 # Build outputs
 dist/
 build/
